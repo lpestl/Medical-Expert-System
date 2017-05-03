@@ -38,9 +38,9 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lingVarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.помощьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -96,8 +96,9 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Выход";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // kbToolStripMenuItem
             // 
@@ -115,6 +116,13 @@
             this.lingVarToolStripMenuItem.Text = "Симптомы в нечеткой логике";
             this.lingVarToolStripMenuItem.Click += new System.EventHandler(this.lingVarToolStripMenuItem_Click);
             // 
+            // typeToolStripMenuItem
+            // 
+            this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
+            this.typeToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.typeToolStripMenuItem.Text = "Типы функций принадлежности";
+            this.typeToolStripMenuItem.Click += new System.EventHandler(this.typeToolStripMenuItem_Click);
+            // 
             // помощьToolStripMenuItem
             // 
             this.помощьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -128,13 +136,6 @@
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
             this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе...";
-            // 
-            // typeToolStripMenuItem
-            // 
-            this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
-            this.typeToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
-            this.typeToolStripMenuItem.Text = "Типы функций принадлежности";
-            this.typeToolStripMenuItem.Click += new System.EventHandler(this.typeToolStripMenuItem_Click);
             // 
             // MainForm
             // 

@@ -9,7 +9,7 @@ namespace MESysWin.src
     public class Symptom
     {
         //private int _id;
-        public int ID { get; set; }
+        public long ID { get; set; }
 
         //private string _name;
         public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace MESysWin.src
         //private double _reasoning_top;
         public double ReasoningTop { get; set; }
 
-        public Symptom(int id, string name, double bottom, double top)
+        public Symptom(long id, string name, double bottom, double top)
         {
             ID = id;
             Name = name;

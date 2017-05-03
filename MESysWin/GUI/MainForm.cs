@@ -17,7 +17,10 @@ namespace MESysWin
         public MainForm()
         {
             InitializeComponent();
+
             DatabaseManager.Instance.DatabaseConnect();
+
+            Log.Print("Open MainForm", "mainForm", Log.type.INFO);
         }
 
         /*private void button1_Click(object sender, EventArgs e)
@@ -32,14 +35,22 @@ namespace MESysWin
 
         private void lingVarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Log.Print("Click Menu -> KnowBase -> Symptoms", "mainForm", Log.type.INFO);
             var symptomsForm = new LingVar();
             symptomsForm.Show();
         }
 
         private void typeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Log.Print("Click Menu -> KnowBase -> MF_types", "mainForm", Log.type.INFO);
             var typeForm = new TypeMFform();
             typeForm.Show();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Log.Print("Click Menu -> File -> Exit", "mainForm", Log.type.INFO);
+            this.Close();
         }
     }
 }

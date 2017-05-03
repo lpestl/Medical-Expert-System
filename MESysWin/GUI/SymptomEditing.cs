@@ -67,7 +67,7 @@ namespace MESysWin.GUI
             {
                 if (prototypeSymtom == null)
                 {
-                    int insertrd_id = DatabaseManager.Instance.InsertSymptom(newSmp);
+                    long insertrd_id = DatabaseManager.Instance.InsertSymptom(newSmp);
                     newSmp.ID = insertrd_id;
                     main = this.Owner as LingVar;
                     if (main != null)
