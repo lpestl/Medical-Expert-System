@@ -69,6 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\FuzzyVarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FuzzyVarForm.Designer.cs">
+      <DependentUpon>FuzzyVarForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\LingVar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     <Compile Include="src\Log.cs" />
     <Compile Include="src\Symptom.cs" />
     <Compile Include="src\TypeMFunc.cs" />
+    <EmbeddedResource Include="GUI\FuzzyVarForm.resx">
+      <DependentUpon>FuzzyVarForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\LingVar.resx">
       <DependentUpon>LingVar.cs</DependentUpon>
     </EmbeddedResource>
@@ -130,6 +139,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -145,7 +155,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="res\GaussMF.png" />
+    <Content Include="res\TglMF.png" />
+    <Content Include="res\TpzMF.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

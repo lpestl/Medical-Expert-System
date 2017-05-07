@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MESysWin.src
 {
-    public enum TypeMFuncEnum { GAUSS, TRIANGULARE, TRAPEZOIDAL };
+    public enum TypeMFuncEnum { GAUSS, TRIANGULARE, TRAPEZOIDAL, NOT_SETUP };
 
     class TypeMFunc
     {

@@ -28,23 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.labelLingVar = new System.Windows.Forms.Label();
             this.textBoxNameLV = new System.Windows.Forms.TextBox();
             this.panelGraph = new System.Windows.Forms.Panel();
-            this.textBoxBottom = new System.Windows.Forms.TextBox();
             this.textBoxTop = new System.Windows.Forms.TextBox();
+            this.textBoxBottom = new System.Windows.Forms.TextBox();
             this.buttonRedraw = new System.Windows.Forms.Button();
             this.groupBoxTermM = new System.Windows.Forms.GroupBox();
+            this.buttonEdit = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.dataGridViewFuzzyVar = new System.Windows.Forms.DataGridView();
             this.id_fuzzy_var = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameFuzzyVar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeFuzzyVar = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.ColorFuzzyVar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.buttonAdd = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
-            this.buttonEdit = new System.Windows.Forms.Button();
+            this.ColumnIdTriangle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnIdTrapez = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnIdGauss = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelGraph.SuspendLayout();
             this.groupBoxTermM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFuzzyVar)).BeginInit();
@@ -53,7 +57,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(516, 326);
+            this.buttonOk.Location = new System.Drawing.Point(566, 326);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 0;
@@ -65,7 +69,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(597, 326);
+            this.buttonCancel.Location = new System.Drawing.Point(647, 326);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 1;
@@ -88,66 +92,105 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNameLV.Location = new System.Drawing.Point(289, 10);
             this.textBoxNameLV.Name = "textBoxNameLV";
-            this.textBoxNameLV.Size = new System.Drawing.Size(383, 20);
+            this.textBoxNameLV.Size = new System.Drawing.Size(433, 20);
             this.textBoxNameLV.TabIndex = 3;
             // 
             // panelGraph
             // 
-            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panelGraph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelGraph.Controls.Add(this.textBoxTop);
             this.panelGraph.Controls.Add(this.textBoxBottom);
             this.panelGraph.Location = new System.Drawing.Point(16, 36);
             this.panelGraph.Name = "panelGraph";
-            this.panelGraph.Size = new System.Drawing.Size(362, 171);
+            this.panelGraph.Size = new System.Drawing.Size(362, 280);
             this.panelGraph.TabIndex = 4;
             this.panelGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.panelGraph_Paint);
+            // 
+            // textBoxTop
+            // 
+            this.textBoxTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTop.Location = new System.Drawing.Point(309, 257);
+            this.textBoxTop.Name = "textBoxTop";
+            this.textBoxTop.Size = new System.Drawing.Size(50, 20);
+            this.textBoxTop.TabIndex = 1;
+            this.textBoxTop.Text = "100";
+            this.textBoxTop.TextChanged += new System.EventHandler(this.textBoxTop_TextChanged);
             // 
             // textBoxBottom
             // 
             this.textBoxBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxBottom.Location = new System.Drawing.Point(3, 148);
+            this.textBoxBottom.Location = new System.Drawing.Point(3, 257);
             this.textBoxBottom.Name = "textBoxBottom";
             this.textBoxBottom.Size = new System.Drawing.Size(50, 20);
             this.textBoxBottom.TabIndex = 0;
             this.textBoxBottom.Text = "0";
             this.textBoxBottom.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textBoxTop
-            // 
-            this.textBoxTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTop.Location = new System.Drawing.Point(307, 147);
-            this.textBoxTop.Name = "textBoxTop";
-            this.textBoxTop.Size = new System.Drawing.Size(50, 20);
-            this.textBoxTop.TabIndex = 1;
-            this.textBoxTop.Text = "100";
+            this.textBoxBottom.TextChanged += new System.EventHandler(this.textBoxBottom_TextChanged);
             // 
             // buttonRedraw
             // 
             this.buttonRedraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRedraw.Location = new System.Drawing.Point(16, 214);
+            this.buttonRedraw.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonRedraw.Location = new System.Drawing.Point(12, 326);
             this.buttonRedraw.Name = "buttonRedraw";
             this.buttonRedraw.Size = new System.Drawing.Size(151, 23);
             this.buttonRedraw.TabIndex = 5;
             this.buttonRedraw.Text = "Пересчитать график";
-            this.buttonRedraw.UseVisualStyleBackColor = true;
+            this.buttonRedraw.UseVisualStyleBackColor = false;
+            this.buttonRedraw.Click += new System.EventHandler(this.buttonRedraw_Click);
             // 
             // groupBoxTermM
             // 
-            this.groupBoxTermM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupBoxTermM.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxTermM.Controls.Add(this.buttonEdit);
             this.groupBoxTermM.Controls.Add(this.buttonRemove);
             this.groupBoxTermM.Controls.Add(this.buttonAdd);
             this.groupBoxTermM.Controls.Add(this.dataGridViewFuzzyVar);
-            this.groupBoxTermM.Location = new System.Drawing.Point(385, 37);
+            this.groupBoxTermM.Location = new System.Drawing.Point(384, 37);
             this.groupBoxTermM.Name = "groupBoxTermM";
-            this.groupBoxTermM.Size = new System.Drawing.Size(287, 170);
+            this.groupBoxTermM.Size = new System.Drawing.Size(338, 279);
             this.groupBoxTermM.TabIndex = 6;
             this.groupBoxTermM.TabStop = false;
             this.groupBoxTermM.Text = "Базовое терм-множество (список нечетких переменных)";
+            // 
+            // buttonEdit
+            // 
+            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEdit.Location = new System.Drawing.Point(65, 249);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(267, 23);
+            this.buttonEdit.TabIndex = 9;
+            this.buttonEdit.Text = "Изменить";
+            this.buttonEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonRemove.Location = new System.Drawing.Point(36, 249);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(23, 23);
+            this.buttonRemove.TabIndex = 8;
+            this.buttonRemove.Text = "-";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonAdd.Location = new System.Drawing.Point(7, 249);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(23, 23);
+            this.buttonAdd.TabIndex = 7;
+            this.buttonAdd.Text = "+";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // dataGridViewFuzzyVar
             // 
@@ -161,23 +204,38 @@
             this.id_fuzzy_var,
             this.NameFuzzyVar,
             this.typeFuzzyVar,
-            this.ColorFuzzyVar});
+            this.ColorFuzzyVar,
+            this.ColumnIdTriangle,
+            this.ColumnIdTrapez,
+            this.ColumnIdGauss});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewFuzzyVar.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewFuzzyVar.Location = new System.Drawing.Point(7, 30);
             this.dataGridViewFuzzyVar.Name = "dataGridViewFuzzyVar";
-            this.dataGridViewFuzzyVar.Size = new System.Drawing.Size(274, 104);
+            this.dataGridViewFuzzyVar.ReadOnly = true;
+            this.dataGridViewFuzzyVar.Size = new System.Drawing.Size(325, 213);
             this.dataGridViewFuzzyVar.TabIndex = 0;
             // 
             // id_fuzzy_var
             // 
+            this.id_fuzzy_var.FillWeight = 50F;
             this.id_fuzzy_var.HeaderText = "ID";
             this.id_fuzzy_var.Name = "id_fuzzy_var";
-            this.id_fuzzy_var.Visible = false;
+            this.id_fuzzy_var.ReadOnly = true;
+            this.id_fuzzy_var.Width = 50;
             // 
             // NameFuzzyVar
             // 
             this.NameFuzzyVar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NameFuzzyVar.HeaderText = "Имя";
             this.NameFuzzyVar.Name = "NameFuzzyVar";
+            this.NameFuzzyVar.ReadOnly = true;
             // 
             // typeFuzzyVar
             // 
@@ -187,55 +245,42 @@
             "Треугольная MF",
             "Трапецеидальная MF"});
             this.typeFuzzyVar.Name = "typeFuzzyVar";
+            this.typeFuzzyVar.ReadOnly = true;
             this.typeFuzzyVar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.typeFuzzyVar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // ColorFuzzyVar
             // 
             this.ColorFuzzyVar.FillWeight = 50F;
+            this.ColorFuzzyVar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ColorFuzzyVar.HeaderText = "Цвет";
             this.ColorFuzzyVar.Name = "ColorFuzzyVar";
+            this.ColorFuzzyVar.ReadOnly = true;
             this.ColorFuzzyVar.Width = 50;
             // 
-            // buttonAdd
+            // ColumnIdTriangle
             // 
-            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(7, 140);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(23, 23);
-            this.buttonAdd.TabIndex = 7;
-            this.buttonAdd.Text = "+";
-            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.ColumnIdTriangle.HeaderText = "TriangleId";
+            this.ColumnIdTriangle.Name = "ColumnIdTriangle";
+            this.ColumnIdTriangle.ReadOnly = true;
             // 
-            // buttonRemove
+            // ColumnIdTrapez
             // 
-            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRemove.Location = new System.Drawing.Point(36, 140);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(23, 23);
-            this.buttonRemove.TabIndex = 8;
-            this.buttonRemove.Text = "-";
-            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.ColumnIdTrapez.HeaderText = "TrapezId";
+            this.ColumnIdTrapez.Name = "ColumnIdTrapez";
+            this.ColumnIdTrapez.ReadOnly = true;
             // 
-            // buttonEdit
+            // ColumnIdGauss
             // 
-            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(65, 140);
-            this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(216, 23);
-            this.buttonEdit.TabIndex = 9;
-            this.buttonEdit.Text = "Изменить";
-            this.buttonEdit.UseVisualStyleBackColor = true;
-            this.buttonEdit.Visible = false;
+            this.ColumnIdGauss.HeaderText = "GaussId";
+            this.ColumnIdGauss.Name = "ColumnIdGauss";
+            this.ColumnIdGauss.ReadOnly = true;
             // 
             // SymptomEditing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 361);
+            this.ClientSize = new System.Drawing.Size(734, 361);
             this.Controls.Add(this.groupBoxTermM);
             this.Controls.Add(this.buttonRedraw);
             this.Controls.Add(this.panelGraph);
@@ -243,8 +288,9 @@
             this.Controls.Add(this.labelLingVar);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
+            this.MinimumSize = new System.Drawing.Size(500, 230);
             this.Name = "SymptomEditing";
-            this.Text = "SymptomEditing";
+            this.Text = "Редактирование симптома";
             this.Resize += new System.EventHandler(this.SymptomEditing_Resize);
             this.panelGraph.ResumeLayout(false);
             this.panelGraph.PerformLayout();
@@ -266,13 +312,16 @@
         private System.Windows.Forms.TextBox textBoxBottom;
         private System.Windows.Forms.Button buttonRedraw;
         private System.Windows.Forms.GroupBox groupBoxTermM;
-        private System.Windows.Forms.DataGridView dataGridViewFuzzyVar;
+        public System.Windows.Forms.DataGridView dataGridViewFuzzyVar;
+        private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Button buttonRemove;
+        private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_fuzzy_var;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameFuzzyVar;
         private System.Windows.Forms.DataGridViewComboBoxColumn typeFuzzyVar;
         private System.Windows.Forms.DataGridViewButtonColumn ColorFuzzyVar;
-        private System.Windows.Forms.Button buttonEdit;
-        private System.Windows.Forms.Button buttonRemove;
-        private System.Windows.Forms.Button buttonAdd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIdTriangle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIdTrapez;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIdGauss;
     }
 }

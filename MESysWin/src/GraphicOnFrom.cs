@@ -148,5 +148,202 @@ namespace MESysWin.src
                 area.DrawString(txt, drawFont, drawBrush, drawPoint, drawFormat);
             }
         }
+
+        public static void DrawGaussMF(System.Windows.Forms.Panel panel, 
+            Color color, 
+            double c, 
+            double sigma, 
+            double Xbottom, 
+            double Xtop)
+        {
+            Pen pen = new Pen(color);
+
+            var w = panel.Width;
+            var h = panel.Height;
+            var gx = 0.1f * w;
+            var gw = 0.8f * w;
+            var gy = 0.1f * h;
+            var gh = 0.7f * h;
+
+            var k = (Xtop - Xbottom) / gw;
+            //var knx = Xbottom / gx;
+
+            var area = panel.CreateGraphics();
+
+            //area.DrawLine(pen, 0, 0, (float)(Xbottom / k + gx), gy + (1 - 0) * gh);
+            var xLast = Xbottom;
+            var yLast = GaussMF(xLast, c, sigma);
+
+            for (int i = 1; i <= gw; i++)
+            {
+                var x = Xbottom + k * i;
+                var y = GaussMF(x, c, sigma);
+
+                area.DrawLine(pen,
+                    (float)gx + i - 1,
+                    (float)(gy + (1 - yLast) * gh),
+                    (float)gx + i,
+                    (float)(gy + (1 - y) * gh));
+
+                xLast = x;
+                yLast = y;
+            }
+        }
+
+        public static double GaussMF(double x, double c, double sigma)
+        {
+            return Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+        }
+
+        public static void DrawTrianglMF(System.Windows.Forms.Panel panel, 
+            Color color, 
+            double a, 
+            double b, 
+            double c,
+            double Xbottom,
+            double Xtop)
+        {
+            Pen pen = new Pen(color);
+
+            var w = panel.Width;
+            var h = panel.Height;
+            var gx = 0.1f * w;
+            var gw = 0.8f * w;
+            var gy = 0.1f * h;
+            var gh = 0.7f * h;
+
+            var k = (Xtop - Xbottom) / gw;
+            
+            var area = panel.CreateGraphics();
+
+            if (a >= Xbottom)
+            {
+                area.DrawLine(pen,
+                    (float)(Xbottom / k + gx),
+                    gy + gh,
+                    (float)(a / k + gx),
+                    gy + gh);
+            }
+           
+            if (c <= Xtop)
+            {
+                area.DrawLine(pen,
+                (float)(c / k + gx),
+                gy + gh,
+                (float)(Xtop / k + gx),
+                gy + gh);
+            }
+
+            area.DrawLine(pen,
+                (float)(a / k + gx),
+                gy + gh,
+                (float)(b / k + gx),
+                gy);
+
+            area.DrawLine(pen,
+                (float)(b / k + gx),
+                gy,
+                (float)(c / k + gx),
+                gy + gh);
+            
+        }
+
+        public static double TriangularMF(double x, double a, double b, double c)
+        {
+            double res = 0;
+
+            if ((x > a) && (x < b))
+            {
+                res = 1.0d - (b - x) / (b - a);
+            }
+            if ((x > b) && (x < c))
+            {
+                res = 1.0d - (x - b) / (c - b);
+            }
+            if (x == b) res = 1;
+
+            return res;
+        }
+
+        public static void DrawTrapezMF(System.Windows.Forms.Panel panel,
+            Color color,
+            double a,
+            double b,
+            double c,
+            double d,
+            double Xbottom,
+            double Xtop)
+        {
+            Pen pen = new Pen(color);
+
+            var w = panel.Width;
+            var h = panel.Height;
+            var gx = 0.1f * w;
+            var gw = 0.8f * w;
+            var gy = 0.1f * h;
+            var gh = 0.7f * h;
+
+            var k = (Xtop - Xbottom) / gw;
+
+            var area = panel.CreateGraphics();
+
+            if (a >= Xbottom)
+            {
+                area.DrawLine(pen,
+                    (float)(Xbottom / k + gx),
+                    gy + gh,
+                    (float)(a / k + gx),
+                    gy + gh);
+            }
+
+            if (d <= Xtop)
+            {
+                area.DrawLine(pen,
+                    (float)(d / k + gx),
+                    gy + gh,
+                    (float)(Xtop / k + gx),
+                    gy + gh);
+            }
+            
+            area.DrawLine(pen,
+                (float)(a / k + gx),
+                gy + gh,
+                (float)(b / k + gx),
+                gy);
+
+            area.DrawLine(pen,
+                (float)(b / k + gx),
+                gy,
+                (float)(c / k + gx),
+                gy);
+
+            area.DrawLine(pen,
+                (float)(c / k + gx),
+                gy,
+                (float)(d / k + gx),
+                gy + gh);
+        }
+
+        public static double TrapezoidalMF(double x, double a, double b, double c, double d)
+        {
+            double res = 0;
+
+            if ((x > a) && (x < b))
+            {
+                res = 1.0d - (b - x) / (b - a);
+            }
+
+            if ((x >= b) && (x <= c))
+            {
+                res = 1;
+            }
+
+            if ((x > c) && (x < d))
+            {
+                res = 1.0d - (x - c) / (d - c);
+            }
+            return res;
+        }
+
     }
 }

@@ -124,29 +124,26 @@ namespace MESysWin.src
                 // Создадим таблицу Triangular_MF, если она не существует
                 CreateTable(conn, "triangular_mf",
                     "id_triangl_mf INTEGER PRIMARY KEY AUTOINCREMENT",
-                    "id_mf_type INTEGER NOT NULL",
+                    //"id_mf_type INTEGER NOT NULL",
                     "a REAL NOT NULL",
                     "b REAL NOT NULL",
-                    "c REAL NOT NULL",
-                    "FOREIGN KEY (id_mf_type) REFERENCES mf_type(id_mf_type)");
+                    "c REAL NOT NULL");
 
                 // Создадим таблицу Trapezoidal_MF, если она не существует
                 CreateTable(conn, "trapezoidal_mf",
                     "id_trapez_mf INTEGER PRIMARY KEY AUTOINCREMENT",
-                    "id_mf_type INTEGER NOT NULL",
+                    //"id_mf_type INTEGER NOT NULL",
                     "a REAL NOT NULL",
                     "b REAL NOT NULL",
                     "c REAL NOT NULL",
-                    "d REAL NOT NULL",
-                    "FOREIGN KEY (id_mf_type) REFERENCES mf_type(id_mf_type)");
+                    "d REAL NOT NULL");
 
                 // Создадим таблицу Gauss_MF, если она не существует
                 CreateTable(conn, "gauss_mf",
                     "id_gauss_mf INTEGER PRIMARY KEY AUTOINCREMENT",
-                    "id_mf_type INTEGER NOT NULL",
+                    //"id_mf_type INTEGER NOT NULL",
                     "c REAL NOT NULL",
-                    "q REAL NOT NULL",
-                    "FOREIGN KEY (id_mf_type) REFERENCES mf_type(id_mf_type)");
+                    "q REAL NOT NULL");
 
                 // Создадим таблицу Fuzzy_variable, если она не существует
                 CreateTable(conn, "fuzzy_variable",
@@ -233,7 +230,8 @@ namespace MESysWin.src
             OpenConnection();
 
             SQLiteCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT id_ling_var, name, reasoning_bottom, reasoning_top FROM linguistic_variable";
+            cmd.CommandText = "SELECT id_ling_var, name, reasoning_bottom, reasoning_top "
+                + "FROM linguistic_variable";
 
             try
             {
@@ -241,7 +239,7 @@ namespace MESysWin.src
 
                 while (r.Read())
                 {
-                    res.Add(new Symptom(r.GetInt32(0), r.GetString(1), r.GetDouble(2), r.GetDouble(3)));
+                    res.Add(new Symptom(r.GetInt64(0), r.GetString(1), r.GetDouble(2), r.GetDouble(3)));
                 }
                 r.Close();
             }
@@ -272,7 +270,7 @@ namespace MESysWin.src
                     
                 while (r.Read())
                 {
-                    list.Add(new TypeMFunc(r.GetInt32(0), r.GetString(1), r.GetString(2)));
+                    list.Add(new TypeMFunc(r.GetInt64(0), r.GetString(1), r.GetString(2)));
                 }
                 r.Close();
             }
@@ -286,6 +284,89 @@ namespace MESysWin.src
 
             return list;
         }
+
+        public List<FuzzyVariable> GetFuzzyVariables(long id_symptom)
+        {
+            List<FuzzyVariable> reslist = new List<FuzzyVariable>();
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT "
+                    + "id_var, "
+                    + "id_ling_var, "
+                    + "name, "
+                    + "id_mf_type, "
+                    + "id_triangl_mf, "
+                    + "id_trapez_mf, "
+                    + "id_gauss_mf, "
+                    + "r, g, b "
+                + "FROM fuzzy_variable "
+                + "WHERE id_ling_var = @id_ling_var";
+
+            cmd.Parameters.AddWithValue("@id_ling_var", id_symptom);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    System.Drawing.Color clr = new System.Drawing.Color();
+                    try
+                    {
+                        clr = System.Drawing.Color.FromArgb(r.GetInt32(7), r.GetInt32(8), r.GetInt32(9));
+                    } catch
+                    {
+                        clr = System.Drawing.Color.Yellow;
+                    }
+
+                    FuzzyVariable fv;
+                    try
+                    {
+                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), r.GetString(2), clr);
+                    } catch
+                    {
+                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), "", clr);
+                    }
+
+                    //fv.ID = r.GetInt64(0);
+                    
+                    switch(r.GetInt64(3))
+                    {
+                        case 0:
+                            fv.Type = TypeMFuncEnum.GAUSS;
+                            break;
+                        case 1:
+                            fv.Type = TypeMFuncEnum.TRIANGULARE;
+                            break;
+                        case 2:
+                            fv.Type = TypeMFuncEnum.TRAPEZOIDAL;
+                            break;
+                        default:
+                            fv.Type = TypeMFuncEnum.NOT_SETUP;
+                            break; 
+                    }
+
+                    fv.Color = clr;
+
+                    try { fv.IdTriangulare = r.GetInt64(4); } catch { fv.IdTriangulare = -1; }
+                    try { fv.IdTrapezoidal = r.GetInt64(5); } catch { fv.IdTrapezoidal = -1; }
+                    try { fv.IdGaussian = r.GetInt64(6); } catch { fv.IdGaussian = -1; }
+
+                    reslist.Add(fv);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+            }
+
+            CloseConnection();
+            return reslist;
+        }
         
         public bool DeleteFromTable(long id, string tableName, string columnName)
         {
@@ -294,7 +375,8 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = String.Format("DELETE FROM {0} WHERE {1} = '{2}'", tableName, columnName, id);
+            cmd.CommandText = String.Format("DELETE FROM {0} WHERE {1} = '{2}'", 
+                tableName, columnName, id);
                 
             try
             {
@@ -342,7 +424,10 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = String.Format("INSERT INTO mf_type (id_mf_type, name, description) VALUES (@id_mf_type, @name, @description)");
+            cmd.CommandText = "INSERT INTO mf_type "
+                + "(id_mf_type, name, description) "
+                + "VALUES (@id_mf_type, @name, @description)";
+
             cmd.Parameters.AddWithValue("@id_mf_type", type.ID);
             cmd.Parameters.AddWithValue("@name", type.Name);
             cmd.Parameters.AddWithValue("@description", type.Description);
@@ -367,7 +452,10 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = String.Format("UPDATE mf_type SET name = @name, description = @description WHERE id_mf_type = @id_mf_type");
+            cmd.CommandText = "UPDATE mf_type "
+                + "SET name = @name, description = @description "
+                + "WHERE id_mf_type = @id_mf_type";
+
             cmd.Parameters.AddWithValue("@id_mf_type", type.ID);
             cmd.Parameters.AddWithValue("@name", type.Name);
             cmd.Parameters.AddWithValue("@description", type.Description);
@@ -394,7 +482,10 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = String.Format("INSERT INTO linguistic_variable (name, reasoning_bottom, reasoning_top) VALUES (@name, @reasoning_bottom, @reasoning_top)");
+            cmd.CommandText = "INSERT INTO linguistic_variable "
+                + "(name, reasoning_bottom, reasoning_top) "
+                + "VALUES (@name, @reasoning_bottom, @reasoning_top)";
+
             cmd.Parameters.AddWithValue("@name", smp.Name);
             cmd.Parameters.AddWithValue("@reasoning_bottom", smp.ReasoningBottom);
             cmd.Parameters.AddWithValue("@reasoning_top", smp.ReasoningTop);
@@ -402,11 +493,7 @@ namespace MESysWin.src
             try
             {
                 cmd.ExecuteNonQuery();
-
-                SQLiteCommand cmdId = conn.CreateCommand();
-
-                //cmdId.CommandText = @"select last_insert_rowid()";
-                //inserted_id = Convert.ToInt32(cmdId.ExecuteScalar());
+                
                 inserted_id = conn.LastInsertRowId;
             }
             catch (SQLiteException ex)
@@ -427,7 +514,11 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = String.Format("UPDATE linguistic_variable SET name = @name, reasoning_bottom = @reasoning_bottom, reasoning_top = @reasoning_top WHERE id_ling_var = @id_ling_var");
+            cmd.CommandText = "UPDATE linguistic_variable "
+                + "SET name = @name, "
+                + "reasoning_bottom = @reasoning_bottom, "
+                + "reasoning_top = @reasoning_top "
+                + "WHERE id_ling_var = @id_ling_var";
 
             cmd.Parameters.AddWithValue("@id_ling_var", smp.ID);
             cmd.Parameters.AddWithValue("@name", smp.Name);
@@ -446,6 +537,150 @@ namespace MESysWin.src
             }
 
             CloseConnection();
+        }
+        
+        public long InsertMF(double c, double sigma)
+        {
+            long inserted_id = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO gauss_mf "
+                + "(c, q) "
+                + "VALUES (@c, @q)";
+
+            cmd.Parameters.AddWithValue("@c", c);
+            cmd.Parameters.AddWithValue("@q", sigma);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                
+                inserted_id = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return inserted_id;
+        }
+
+        public long InsertMF(double a, double b, double c)
+        {
+            long inserted_id = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO triangular_mf "
+                + "(a, b, c) "
+                + "VALUES (@a, @b, @c)";
+
+            cmd.Parameters.AddWithValue("@a", a);
+            cmd.Parameters.AddWithValue("@b", b);
+            cmd.Parameters.AddWithValue("@c", c);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+                inserted_id = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return inserted_id;
+        }
+
+        public long InsertMF(double a, double b, double c, double d)
+        {
+            long inserted_id = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO trapezoidal_mf "
+                + "(a, b, c, d) "
+                + "VALUES (@a, @b, @c, @d)";
+
+            cmd.Parameters.AddWithValue("@a", a);
+            cmd.Parameters.AddWithValue("@b", b);
+            cmd.Parameters.AddWithValue("@c", c);
+            cmd.Parameters.AddWithValue("@d", d);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+                inserted_id = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return inserted_id;
+        }
+
+        public long InsertFuzzyVar(FuzzyVariable fv)
+        {
+            long inserted_id = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO fuzzy_variable "
+                + "(id_ling_var, name, id_mf_type, id_triangl_mf, id_trapez_mf, "
+                + "id_gauss_mf, r, g, b) "
+                + "VALUES (@id_ling_var, @name, @id_mf_type, @id_triangl_mf, @id_trapez_mf, "
+                + "@id_gauss_mf, @r, @g, @b)";
+
+            cmd.Parameters.AddWithValue("@id_ling_var", fv.IdSymptom);
+            cmd.Parameters.AddWithValue("@name", fv.Name);
+            cmd.Parameters.AddWithValue("@id_mf_type", (int)fv.Type);
+            cmd.Parameters.AddWithValue("@id_triangl_mf", fv.IdTriangulare);
+            cmd.Parameters.AddWithValue("@id_trapez_mf", fv.IdTrapezoidal);
+            cmd.Parameters.AddWithValue("@id_gauss_mf", fv.IdGaussian);
+            cmd.Parameters.AddWithValue("@r", fv.Color.R);
+            cmd.Parameters.AddWithValue("@g", fv.Color.G);
+            cmd.Parameters.AddWithValue("@b", fv.Color.B);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+                inserted_id = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return inserted_id;
         }
     }
 }
