@@ -1,6 +1,6 @@
 ﻿namespace MESysWin.GUI
 {
-    partial class TypeEdit
+    partial class BoundaryEdit
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.labelId = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
-            this.labelDescription = new System.Windows.Forms.Label();
+            this.labelDesc = new System.Windows.Forms.Label();
             this.textBoxId = new System.Windows.Forms.TextBox();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
@@ -41,33 +41,33 @@
             // labelId
             // 
             this.labelId.AutoSize = true;
-            this.labelId.Location = new System.Drawing.Point(13, 13);
+            this.labelId.Location = new System.Drawing.Point(13, 16);
             this.labelId.Name = "labelId";
-            this.labelId.Size = new System.Drawing.Size(97, 13);
+            this.labelId.Size = new System.Drawing.Size(90, 13);
             this.labelId.TabIndex = 0;
-            this.labelId.Text = "ID в базе данных:";
+            this.labelId.Text = "Идентификатор:";
             // 
             // labelName
             // 
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(13, 39);
+            this.labelName.Location = new System.Drawing.Point(13, 46);
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(86, 13);
             this.labelName.TabIndex = 1;
             this.labelName.Text = "Название типа:";
             // 
-            // labelDescription
+            // labelDesc
             // 
-            this.labelDescription.AutoSize = true;
-            this.labelDescription.Location = new System.Drawing.Point(13, 66);
-            this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(220, 13);
-            this.labelDescription.TabIndex = 2;
-            this.labelDescription.Text = "Описание типа функции принадлежности:";
+            this.labelDesc.AutoSize = true;
+            this.labelDesc.Location = new System.Drawing.Point(13, 72);
+            this.labelDesc.Name = "labelDesc";
+            this.labelDesc.Size = new System.Drawing.Size(292, 13);
+            this.labelDesc.TabIndex = 2;
+            this.labelDesc.Text = "Описание пограничного типа функции принадлежности:";
             // 
             // textBoxId
             // 
-            this.textBoxId.Location = new System.Drawing.Point(116, 10);
+            this.textBoxId.Location = new System.Drawing.Point(109, 13);
             this.textBoxId.Name = "textBoxId";
             this.textBoxId.ReadOnly = true;
             this.textBoxId.Size = new System.Drawing.Size(163, 20);
@@ -75,7 +75,7 @@
             // 
             // textBoxName
             // 
-            this.textBoxName.Location = new System.Drawing.Point(116, 36);
+            this.textBoxName.Location = new System.Drawing.Point(109, 43);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(163, 20);
             this.textBoxName.TabIndex = 4;
@@ -85,16 +85,16 @@
             this.richTextBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxDescription.Location = new System.Drawing.Point(12, 82);
+            this.richTextBoxDescription.Location = new System.Drawing.Point(16, 88);
             this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(420, 135);
+            this.richTextBoxDescription.Size = new System.Drawing.Size(416, 137);
             this.richTextBoxDescription.TabIndex = 5;
             this.richTextBoxDescription.Text = "";
             // 
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(276, 226);
+            this.buttonOk.Location = new System.Drawing.Point(276, 231);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 6;
@@ -106,14 +106,14 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(357, 226);
+            this.buttonCancel.Location = new System.Drawing.Point(357, 231);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
-            // TypeEdit
+            // BoundaryEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -123,11 +123,11 @@
             this.Controls.Add(this.richTextBoxDescription);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.textBoxId);
-            this.Controls.Add(this.labelDescription);
+            this.Controls.Add(this.labelDesc);
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.labelId);
-            this.Name = "TypeEdit";
-            this.Text = "Добавление / редактирование типа функции";
+            this.Name = "BoundaryEdit";
+            this.Text = "Добавление / редактирование пограничных типов";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,7 +137,7 @@
 
         private System.Windows.Forms.Label labelId;
         private System.Windows.Forms.Label labelName;
-        private System.Windows.Forms.Label labelDescription;
+        private System.Windows.Forms.Label labelDesc;
         private System.Windows.Forms.TextBox textBoxId;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;

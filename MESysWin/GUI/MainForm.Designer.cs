@@ -41,6 +41,7 @@
             this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.помощьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BoundaryTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -96,7 +97,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.exitToolStripMenuItem.Text = "Выход";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -104,7 +105,8 @@
             // 
             this.kbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lingVarToolStripMenuItem,
-            this.typeToolStripMenuItem});
+            this.typeToolStripMenuItem,
+            this.BoundaryTypeToolStripMenuItem});
             this.kbToolStripMenuItem.Name = "kbToolStripMenuItem";
             this.kbToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.kbToolStripMenuItem.Text = "База знаний";
@@ -112,14 +114,14 @@
             // lingVarToolStripMenuItem
             // 
             this.lingVarToolStripMenuItem.Name = "lingVarToolStripMenuItem";
-            this.lingVarToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.lingVarToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.lingVarToolStripMenuItem.Text = "Симптомы в нечеткой логике";
             this.lingVarToolStripMenuItem.Click += new System.EventHandler(this.lingVarToolStripMenuItem_Click);
             // 
             // typeToolStripMenuItem
             // 
             this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
-            this.typeToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.typeToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.typeToolStripMenuItem.Text = "Типы функций принадлежности";
             this.typeToolStripMenuItem.Click += new System.EventHandler(this.typeToolStripMenuItem_Click);
             // 
@@ -136,6 +138,13 @@
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
             this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе...";
+            // 
+            // BoundaryTypeToolStripMenuItem
+            // 
+            this.BoundaryTypeToolStripMenuItem.Name = "BoundaryTypeToolStripMenuItem";
+            this.BoundaryTypeToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.BoundaryTypeToolStripMenuItem.Text = "Пограничные типы функций принадлежности";
+            this.BoundaryTypeToolStripMenuItem.Click += new System.EventHandler(this.BoundaryTypeToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -171,6 +180,7 @@
         private System.Windows.Forms.ToolStripMenuItem помощьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem typeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem BoundaryTypeToolStripMenuItem;
     }
 }
 

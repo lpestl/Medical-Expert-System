@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MESysWin.src
 {
-    class FuzzyVariable
+    public class FuzzyVariable
     {
         public long ID { get; set; }
 
@@ -17,19 +17,22 @@ namespace MESysWin.src
 
         public TypeMFuncEnum Type { get; set; }
 
+        public BoundaryTypeEnum Bound { get; set; }
+
         public long IdTriangulare { get; set; }
 
         public long IdTrapezoidal { get; set; }
 
         public long IdGaussian { get; set; }
 
-        public Color Color { get; set; }
+        public Color СolorLine { get; set; }
 
         public FuzzyVariable(long id, long id_symp, string name, Color color)
         {
             ID = id;
             IdSymptom = id_symp;
             Name = name;
+            СolorLine = color;
 
             IdGaussian = IdTriangulare = IdTrapezoidal = -1;
         }

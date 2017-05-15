@@ -32,6 +32,8 @@
             this.labelType = new System.Windows.Forms.Label();
             this.labelColor = new System.Windows.Forms.Label();
             this.groupBoxSettingFuzzy = new System.Windows.Forms.GroupBox();
+            this.comboBoxBound = new System.Windows.Forms.ComboBox();
+            this.labelBound = new System.Windows.Forms.Label();
             this.buttonColor = new System.Windows.Forms.Button();
             this.comboBoxType = new System.Windows.Forms.ComboBox();
             this.textBoxName = new System.Windows.Forms.TextBox();
@@ -106,6 +108,10 @@
             // 
             // groupBoxSettingFuzzy
             // 
+            this.groupBoxSettingFuzzy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxSettingFuzzy.Controls.Add(this.comboBoxBound);
+            this.groupBoxSettingFuzzy.Controls.Add(this.labelBound);
             this.groupBoxSettingFuzzy.Controls.Add(this.buttonColor);
             this.groupBoxSettingFuzzy.Controls.Add(this.comboBoxType);
             this.groupBoxSettingFuzzy.Controls.Add(this.textBoxName);
@@ -114,10 +120,32 @@
             this.groupBoxSettingFuzzy.Controls.Add(this.labelType);
             this.groupBoxSettingFuzzy.Location = new System.Drawing.Point(12, 12);
             this.groupBoxSettingFuzzy.Name = "groupBoxSettingFuzzy";
-            this.groupBoxSettingFuzzy.Size = new System.Drawing.Size(300, 116);
+            this.groupBoxSettingFuzzy.Size = new System.Drawing.Size(300, 166);
             this.groupBoxSettingFuzzy.TabIndex = 3;
             this.groupBoxSettingFuzzy.TabStop = false;
             this.groupBoxSettingFuzzy.Text = "Неопределленная переменная";
+            // 
+            // comboBoxBound
+            // 
+            this.comboBoxBound.FormattingEnabled = true;
+            this.comboBoxBound.Items.AddRange(new object[] {
+            "Крайний левый (ИСТИНА->ЛОЖЬ)",
+            "Крайний правый (ЛОЖЬ->ИСТИНА)",
+            "Средний (ЛОЖЬ->ИСТИНА->ЛОЖЬ)"});
+            this.comboBoxBound.Location = new System.Drawing.Point(108, 116);
+            this.comboBoxBound.Name = "comboBoxBound";
+            this.comboBoxBound.Size = new System.Drawing.Size(186, 21);
+            this.comboBoxBound.TabIndex = 7;
+            this.comboBoxBound.SelectedIndexChanged += new System.EventHandler(this.comboBoxBound_SelectedIndexChanged);
+            // 
+            // labelBound
+            // 
+            this.labelBound.AutoSize = true;
+            this.labelBound.Location = new System.Drawing.Point(6, 119);
+            this.labelBound.Name = "labelBound";
+            this.labelBound.Size = new System.Drawing.Size(98, 13);
+            this.labelBound.TabIndex = 6;
+            this.labelBound.Text = "Пограничный тип:";
             // 
             // buttonColor
             // 
@@ -154,7 +182,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(566, 376);
+            this.buttonOk.Location = new System.Drawing.Point(616, 426);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 4;
@@ -166,7 +194,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(647, 376);
+            this.buttonCancel.Location = new System.Drawing.Point(697, 426);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 5;
@@ -181,19 +209,21 @@
             this.panelGraph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelGraph.Location = new System.Drawing.Point(318, 12);
             this.panelGraph.Name = "panelGraph";
-            this.panelGraph.Size = new System.Drawing.Size(404, 358);
+            this.panelGraph.Size = new System.Drawing.Size(454, 408);
             this.panelGraph.TabIndex = 6;
             this.panelGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.panelGraph_Paint);
+            this.panelGraph.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelGraph_MouseDown);
+            this.panelGraph.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelGraph_MouseMove);
+            this.panelGraph.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelGraph_MouseUp);
             // 
             // tabControlType
             // 
             this.tabControlType.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tabControlType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControlType.Controls.Add(this.tabPageGauss);
             this.tabControlType.Controls.Add(this.tabPageTriangl);
             this.tabControlType.Controls.Add(this.tabPageTrapez);
-            this.tabControlType.Location = new System.Drawing.Point(12, 134);
+            this.tabControlType.Location = new System.Drawing.Point(12, 184);
             this.tabControlType.Name = "tabControlType";
             this.tabControlType.SelectedIndex = 0;
             this.tabControlType.Size = new System.Drawing.Size(300, 265);
@@ -456,7 +486,7 @@
             // panelStopTab
             // 
             this.panelStopTab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panelStopTab.Location = new System.Drawing.Point(0, 376);
+            this.panelStopTab.Location = new System.Drawing.Point(0, 426);
             this.panelStopTab.Name = "panelStopTab";
             this.panelStopTab.Size = new System.Drawing.Size(326, 36);
             this.panelStopTab.TabIndex = 8;
@@ -465,7 +495,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 411);
+            this.ClientSize = new System.Drawing.Size(784, 461);
             this.Controls.Add(this.panelStopTab);
             this.Controls.Add(this.tabControlType);
             this.Controls.Add(this.panelGraph);
@@ -532,5 +562,7 @@
         private System.Windows.Forms.Label labelTrapB;
         private System.Windows.Forms.Label labelTrapA;
         private System.Windows.Forms.Panel panelStopTab;
+        private System.Windows.Forms.ComboBox comboBoxBound;
+        private System.Windows.Forms.Label labelBound;
     }
 }

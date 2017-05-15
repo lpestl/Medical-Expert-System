@@ -10,7 +10,7 @@ namespace MESysWin.src
 {
     class GraphicOnFrom
     {
-        public static void PaintGrid(System.Windows.Forms.Panel panel)
+        public static void PaintGrid(Panel panel)
         {
             Pen pen_black = new Pen(Color.FromArgb(255, 0, 0, 0));
             var area = panel.CreateGraphics();
@@ -82,7 +82,7 @@ namespace MESysWin.src
             }
         }
 
-        public static void DrawBottomScale(System.Windows.Forms.Panel panel, double Xbottom, double Xtop)
+        public static void DrawBottomScale(Panel panel, double Xbottom, double Xtop)
         {
             var w = panel.Width;
             var h = panel.Height;
@@ -149,14 +149,15 @@ namespace MESysWin.src
             }
         }
 
-        public static void DrawGaussMF(System.Windows.Forms.Panel panel, 
+        public static void DrawGaussMF(Panel panel, 
             Color color, 
             double c, 
             double sigma, 
             double Xbottom, 
-            double Xtop)
+            double Xtop,
+            BoundaryTypeEnum bound)
         {
-            Pen pen = new Pen(color);
+            Pen pen = new Pen(color, 2);
 
             var w = panel.Width;
             var h = panel.Height;
@@ -171,14 +172,13 @@ namespace MESysWin.src
             var area = panel.CreateGraphics();
 
             //area.DrawLine(pen, 0, 0, (float)(Xbottom / k + gx), gy + (1 - 0) * gh);
-            var xLast = Xbottom;
-            var yLast = GaussMF(xLast, c, sigma);
+            double xLast = Xbottom;
+            double yLast = GaussMF(xLast, c, sigma, bound);
 
             for (int i = 1; i <= gw; i++)
             {
-                var x = Xbottom + k * i;
-                var y = GaussMF(x, c, sigma);
-
+                double x = Xbottom + k * i;
+                double y = GaussMF(x, c, sigma, bound);
                 area.DrawLine(pen,
                     (float)gx + i - 1,
                     (float)(gy + (1 - yLast) * gh),
@@ -188,22 +188,78 @@ namespace MESysWin.src
                 xLast = x;
                 yLast = y;
             }
+
         }
 
-        public static double GaussMF(double x, double c, double sigma)
+        public static double GaussMF(double x, double c, double sigma, BoundaryTypeEnum bound)
         {
-            return Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+            double res = 0;
+            switch (bound)
+            {
+                case BoundaryTypeEnum.LEFT:
+                    if (x <= c) res = 1;
+                    else res = Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+                    break;
+                case BoundaryTypeEnum.RIGHT:
+                    if (x >= c) res = 1;
+                    else res = Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+                    break;
+                case BoundaryTypeEnum.MIDDLE:
+                    res = Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+                    break;
+                default:
+                    res = Math.Exp(-((x - c) / sigma) * ((x - c) / sigma));
+                    break;
+            }
+            return res;
         }
 
-        public static void DrawTrianglMF(System.Windows.Forms.Panel panel, 
+        public static bool DrawGaussPoints(Panel panel, int mouseX, int mouseY, double c, double sigma, double Xbottom, double Xtop, BoundaryTypeEnum bound)
+        {
+            bool res = false;
+
+            double xX = c;
+            double yY = GaussMF(c, c, sigma, bound);
+            
+            var w = panel.Width;
+            var h = panel.Height;
+            var gx = 0.1f * w;
+            var gw = 0.8f * w;
+            var gy = 0.1f * h;
+            var gh = 0.7f * h;
+
+            var k = (Xtop - Xbottom) / gw;
+            var nul = (float)(Xbottom / k);
+
+            var xE = /*(int)Math.Round(*/xX / k - nul + gx;//);
+            var yE = /*(int)Math.Round(*/gy + (1 - yY) * gh;//);
+
+
+            var area = panel.CreateGraphics();
+
+            Pen pen = new Pen(Color.Black, 2);
+
+            area.DrawLine(pen, (float)xE - 2, (float)yE, (float)(xE + 2), (float)yE);
+            area.DrawLine(pen, (float)xE, (float)yE - 2, (float)xE, (float)(yE + 2));
+
+            var l = Math.Sqrt((mouseX - xE) * (mouseX - xE) + (mouseY - yE) * (mouseY - yE));
+
+            var r = 10 * (Math.PI / 2 - Math.Atan(l));
+            area.DrawEllipse(pen, new Rectangle((int)(xE - r), (int)(yE - r), (int)(2 * r), (int)(2 * r)));
+
+            return res;
+        }
+
+        public static void DrawTrianglMF(Panel panel, 
             Color color, 
             double a, 
             double b, 
             double c,
             double Xbottom,
-            double Xtop)
+            double Xtop,
+            BoundaryTypeEnum bound)
         {
-            Pen pen = new Pen(color);
+            Pen pen = new Pen(color, 2);
 
             var w = panel.Width;
             var h = panel.Height;
@@ -216,65 +272,109 @@ namespace MESysWin.src
             
             var area = panel.CreateGraphics();
 
+            var nul = (float)(Xbottom / k);
+
+            float yBottom = (float)TriangularMF(Xbottom, a, b, c, bound);
+            float yA = (float)TriangularMF(a, a, b, c, bound);
+            float yB = (float)TriangularMF(b, a, b, c, bound);
+            float yC = (float)TriangularMF(c, a, b, c, bound);
+            float yTop = (float)TriangularMF(Xtop, a, b, c, bound);
+
             if (a >= Xbottom)
             {
+                var bottom = (float)(Xbottom / k - nul + gx);
+                var top = (float)(a / k - nul + gx);
                 area.DrawLine(pen,
-                    (float)(Xbottom / k + gx),
-                    gy + gh,
-                    (float)(a / k + gx),
-                    gy + gh);
+                        bottom,
+                        gy + (1 - yBottom) * gh,
+                        top,
+                        gy + (1 - yA) * gh);
+                
             }
            
-            if (c <= Xtop)
+            if (c <= Xtop) 
             {
+                var bottom = (float)(c / k - nul + gx);
+                var top = (float)(Xtop / k - nul + gx);
                 area.DrawLine(pen,
-                (float)(c / k + gx),
-                gy + gh,
-                (float)(Xtop / k + gx),
-                gy + gh);
+                        bottom,
+                        gy + (1 - yC) * gh,
+                        top,
+                        gy + (1 - yTop) * gh);
+                
             }
+            
+            area.DrawLine(pen,
+                    (float)(a / k - nul + gx),
+                    gy + (1 - yA) * gh,
+                    (float)(b / k - nul + gx),
+                    gy + (1 - yB) * gh);
 
             area.DrawLine(pen,
-                (float)(a / k + gx),
-                gy + gh,
-                (float)(b / k + gx),
-                gy);
-
-            area.DrawLine(pen,
-                (float)(b / k + gx),
-                gy,
-                (float)(c / k + gx),
-                gy + gh);
+                    (float)(b / k - nul + gx),
+                    gy + (1 - yB) * gh,
+                    (float)(c / k - nul + gx),
+                    gy + (1 - yC) * gh);
             
         }
 
-        public static double TriangularMF(double x, double a, double b, double c)
+        public static double TriangularMF(double x, double a, double b, double c, BoundaryTypeEnum bound)
         {
             double res = 0;
-
-            if ((x > a) && (x < b))
+            switch (bound)
             {
-                res = 1.0d - (b - x) / (b - a);
+                case BoundaryTypeEnum.LEFT:
+                    if ((x > b) && (x < c))
+                    {
+                        res = 1.0d - (x - b) / (c - b);
+                    }
+                    if (x <= b) res = 1;
+                    break;
+                case BoundaryTypeEnum.RIGHT:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
+                    if (x >= b) res = 1;
+                    break;
+                case BoundaryTypeEnum.MIDDLE:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
+                    if ((x > b) && (x < c))
+                    {
+                        res = 1.0d - (x - b) / (c - b);
+                    }
+                    if (x == b) res = 1;
+                    break;
+                default:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
+                    if ((x > b) && (x < c))
+                    {
+                        res = 1.0d - (x - b) / (c - b);
+                    }
+                    if (x == b) res = 1;
+                    break;
             }
-            if ((x > b) && (x < c))
-            {
-                res = 1.0d - (x - b) / (c - b);
-            }
-            if (x == b) res = 1;
-
+            
             return res;
         }
 
-        public static void DrawTrapezMF(System.Windows.Forms.Panel panel,
+        public static void DrawTrapezMF(Panel panel,
             Color color,
             double a,
             double b,
             double c,
             double d,
             double Xbottom,
-            double Xtop)
+            double Xtop,
+            BoundaryTypeEnum bound)
         {
-            Pen pen = new Pen(color);
+            Pen pen = new Pen(color, 2);
 
             var w = panel.Width;
             var h = panel.Height;
@@ -287,61 +387,114 @@ namespace MESysWin.src
 
             var area = panel.CreateGraphics();
 
+            var nul = (float)(Xbottom / k);
+
+            float yBottom = (float)TrapezoidalMF(Xbottom, a, b, c, d, bound);
+            float yA = (float)TrapezoidalMF(a, a, b, c, d, bound);
+            float yB = (float)TrapezoidalMF(b, a, b, c, d, bound);
+            float yC = (float)TrapezoidalMF(c, a, b, c, d, bound);
+            float yD = (float)TrapezoidalMF(d, a, b, c, d, bound);
+            float yTop = (float)TrapezoidalMF(Xtop, a, b, c, d, bound);
+
             if (a >= Xbottom)
             {
                 area.DrawLine(pen,
-                    (float)(Xbottom / k + gx),
-                    gy + gh,
-                    (float)(a / k + gx),
-                    gy + gh);
+                        (float)(Xbottom / k - nul + gx),
+                        gy + (1 - yBottom) * gh,
+                        (float)(a / k - nul + gx),
+                        gy + (1 - yA) * gh);
             }
 
             if (d <= Xtop)
             {
                 area.DrawLine(pen,
-                    (float)(d / k + gx),
-                    gy + gh,
-                    (float)(Xtop / k + gx),
-                    gy + gh);
+                        (float)(d / k - nul + gx),
+                        gy + (1 - yD) * gh,
+                        (float)(Xtop / k - nul + gx),
+                        gy + (1 - yTop) * gh);
+
             }
+
+            area.DrawLine(pen,
+                    (float)(a / k - nul + gx),
+                    gy + (1 - yA) * gh,
+                    (float)(b / k - nul + gx),
+                    gy + (1 - yB) * gh);
             
             area.DrawLine(pen,
-                (float)(a / k + gx),
-                gy + gh,
-                (float)(b / k + gx),
-                gy);
+                (float)(b / k - nul + gx),
+                gy + (1 - yB) * gh,
+                (float)(c / k - nul + gx),
+                gy + (1 - yC) * gh);
 
             area.DrawLine(pen,
-                (float)(b / k + gx),
-                gy,
-                (float)(c / k + gx),
-                gy);
-
-            area.DrawLine(pen,
-                (float)(c / k + gx),
-                gy,
-                (float)(d / k + gx),
-                gy + gh);
+                (float)(c / k - nul + gx),
+                gy + (1 - yC) * gh,
+                (float)(d / k - nul + gx),
+                gy + (1 - yD) * gh);
         }
 
-        public static double TrapezoidalMF(double x, double a, double b, double c, double d)
+        public static double TrapezoidalMF(double x, double a, double b, double c, double d, BoundaryTypeEnum bound)
         {
             double res = 0;
-
-            if ((x > a) && (x < b))
+            switch (bound)
             {
-                res = 1.0d - (b - x) / (b - a);
-            }
+                case BoundaryTypeEnum.LEFT:
+                    if (x <= c)
+                    {
+                        res = 1;
+                    }
 
-            if ((x >= b) && (x <= c))
-            {
-                res = 1;
-            }
+                    if ((x > c) && (x < d))
+                    {
+                        res = 1.0d - (x - c) / (d - c);
+                    }
+                    break;
+                case BoundaryTypeEnum.RIGHT:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
 
-            if ((x > c) && (x < d))
-            {
-                res = 1.0d - (x - c) / (d - c);
+                    if (x >= b)
+                    {
+                        res = 1;
+                    }
+                    break;
+                case BoundaryTypeEnum.MIDDLE:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
+
+                    if ((x >= b) && (x <= c))
+                    {
+                        res = 1;
+                    }
+
+                    if ((x > c) && (x < d))
+                    {
+                        res = 1.0d - (x - c) / (d - c);
+                    }
+                    break;
+                default:
+                    if ((x > a) && (x < b))
+                    {
+                        res = 1.0d - (b - x) / (b - a);
+                    }
+
+                    if ((x >= b) && (x <= c))
+                    {
+                        res = 1;
+                    }
+
+                    if ((x > c) && (x < d))
+                    {
+                        res = 1.0d - (x - c) / (d - c);
+                    }
+                    break;
             }
+            
             return res;
         }
 

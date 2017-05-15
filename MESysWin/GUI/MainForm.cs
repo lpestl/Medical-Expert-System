@@ -52,5 +52,12 @@ namespace MESysWin
             Log.Print("Click Menu -> File -> Exit", "mainForm", Log.type.INFO);
             this.Close();
         }
+
+        private void BoundaryTypeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Log.Print("Click Menu -> KnowBase -> Boundary type", "mainForm", Log.type.INFO);
+            var typeForm = new BoundaryTypeForm();
+            typeForm.Show();
+        }
     }
 }

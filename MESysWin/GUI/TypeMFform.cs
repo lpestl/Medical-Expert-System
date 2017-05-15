@@ -70,7 +70,7 @@ namespace MESysWin.GUI
                 var i = dataGridViewTypes.SelectedCells[0].RowIndex;
 
                 var formAdd = new TypeEdit(
-                    Convert.ToInt32(dataGridViewTypes.Rows[i].Cells[0].Value), 
+                    Convert.ToInt64(dataGridViewTypes.Rows[i].Cells[0].Value), 
                     Convert.ToString(dataGridViewTypes.Rows[i].Cells[1].Value), 
                     Convert.ToString(dataGridViewTypes.Rows[i].Cells[2].Value),
                     TypeEdit.InsertEnum.UPDATE);

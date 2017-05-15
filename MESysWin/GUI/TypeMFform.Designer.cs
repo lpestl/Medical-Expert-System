@@ -54,7 +54,7 @@
             this.dataGridViewTypes.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewTypes.Name = "dataGridViewTypes";
             this.dataGridViewTypes.ReadOnly = true;
-            this.dataGridViewTypes.Size = new System.Drawing.Size(443, 242);
+            this.dataGridViewTypes.Size = new System.Drawing.Size(460, 258);
             this.dataGridViewTypes.TabIndex = 0;
             // 
             // IdType
@@ -84,7 +84,7 @@
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(12, 260);
+            this.buttonAdd.Location = new System.Drawing.Point(12, 276);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(75, 23);
             this.buttonAdd.TabIndex = 1;
@@ -96,7 +96,7 @@
             // 
             this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRemove.Location = new System.Drawing.Point(93, 260);
+            this.buttonRemove.Location = new System.Drawing.Point(93, 276);
             this.buttonRemove.Name = "buttonRemove";
             this.buttonRemove.Size = new System.Drawing.Size(75, 23);
             this.buttonRemove.TabIndex = 2;
@@ -107,7 +107,7 @@
             // buttonEdit
             // 
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonEdit.Location = new System.Drawing.Point(174, 260);
+            this.buttonEdit.Location = new System.Drawing.Point(174, 276);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(97, 23);
             this.buttonEdit.TabIndex = 3;
@@ -118,7 +118,7 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(380, 260);
+            this.buttonClose.Location = new System.Drawing.Point(397, 276);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 4;
@@ -130,7 +130,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 295);
+            this.ClientSize = new System.Drawing.Size(484, 311);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.buttonRemove);

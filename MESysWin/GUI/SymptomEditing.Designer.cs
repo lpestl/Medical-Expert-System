@@ -44,7 +44,10 @@
             this.dataGridViewFuzzyVar = new System.Windows.Forms.DataGridView();
             this.id_fuzzy_var = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameFuzzyVar = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.typeFuzzyVar = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.idTypeMfColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.typeFuzzyVar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idBoundTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.typeBound = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColorFuzzyVar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ColumnIdTriangle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnIdTrapez = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -167,6 +170,7 @@
             this.buttonEdit.TabIndex = 9;
             this.buttonEdit.Text = "Изменить";
             this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
             // buttonRemove
             // 
@@ -203,7 +207,10 @@
             this.dataGridViewFuzzyVar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_fuzzy_var,
             this.NameFuzzyVar,
+            this.idTypeMfColumn,
             this.typeFuzzyVar,
+            this.idBoundTypeColumn,
+            this.typeBound,
             this.ColorFuzzyVar,
             this.ColumnIdTriangle,
             this.ColumnIdTrapez,
@@ -228,26 +235,39 @@
             this.id_fuzzy_var.HeaderText = "ID";
             this.id_fuzzy_var.Name = "id_fuzzy_var";
             this.id_fuzzy_var.ReadOnly = true;
-            this.id_fuzzy_var.Width = 50;
+            this.id_fuzzy_var.Width = 25;
             // 
             // NameFuzzyVar
             // 
-            this.NameFuzzyVar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NameFuzzyVar.HeaderText = "Имя";
             this.NameFuzzyVar.Name = "NameFuzzyVar";
             this.NameFuzzyVar.ReadOnly = true;
             // 
+            // idTypeMfColumn
+            // 
+            this.idTypeMfColumn.HeaderText = "ID_MF";
+            this.idTypeMfColumn.Name = "idTypeMfColumn";
+            this.idTypeMfColumn.ReadOnly = true;
+            this.idTypeMfColumn.Width = 30;
+            // 
             // typeFuzzyVar
             // 
-            this.typeFuzzyVar.HeaderText = "Тип MF";
-            this.typeFuzzyVar.Items.AddRange(new object[] {
-            "Гауссова MF",
-            "Треугольная MF",
-            "Трапецеидальная MF"});
+            this.typeFuzzyVar.HeaderText = "Тип функции";
             this.typeFuzzyVar.Name = "typeFuzzyVar";
             this.typeFuzzyVar.ReadOnly = true;
-            this.typeFuzzyVar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.typeFuzzyVar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // idBoundTypeColumn
+            // 
+            this.idBoundTypeColumn.HeaderText = "ID_bound";
+            this.idBoundTypeColumn.Name = "idBoundTypeColumn";
+            this.idBoundTypeColumn.ReadOnly = true;
+            this.idBoundTypeColumn.Width = 30;
+            // 
+            // typeBound
+            // 
+            this.typeBound.HeaderText = "Тип границы истинности";
+            this.typeBound.Name = "typeBound";
+            this.typeBound.ReadOnly = true;
             // 
             // ColorFuzzyVar
             // 
@@ -263,18 +283,21 @@
             this.ColumnIdTriangle.HeaderText = "TriangleId";
             this.ColumnIdTriangle.Name = "ColumnIdTriangle";
             this.ColumnIdTriangle.ReadOnly = true;
+            this.ColumnIdTriangle.Width = 25;
             // 
             // ColumnIdTrapez
             // 
             this.ColumnIdTrapez.HeaderText = "TrapezId";
             this.ColumnIdTrapez.Name = "ColumnIdTrapez";
             this.ColumnIdTrapez.ReadOnly = true;
+            this.ColumnIdTrapez.Width = 25;
             // 
             // ColumnIdGauss
             // 
             this.ColumnIdGauss.HeaderText = "GaussId";
             this.ColumnIdGauss.Name = "ColumnIdGauss";
             this.ColumnIdGauss.ReadOnly = true;
+            this.ColumnIdGauss.Width = 25;
             // 
             // SymptomEditing
             // 
@@ -318,7 +341,10 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_fuzzy_var;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameFuzzyVar;
-        private System.Windows.Forms.DataGridViewComboBoxColumn typeFuzzyVar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idTypeMfColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn typeFuzzyVar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idBoundTypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn typeBound;
         private System.Windows.Forms.DataGridViewButtonColumn ColorFuzzyVar;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIdTriangle;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIdTrapez;

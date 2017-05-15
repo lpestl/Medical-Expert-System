@@ -42,18 +42,20 @@ namespace MESysWin.GUI
                 string[] row = new string[] { fv.ID.ToString(), fv.Name/*, smp.ReasoningBottom.ToString(), smp.ReasoningTop.ToString()*/ };
                 var i = dataGridViewFuzzyVar.Rows.Add(row);
 
-                var comboBox = dataGridViewFuzzyVar.Rows[i].Cells[2] as DataGridViewComboBoxCell;
-                if (fv.Type != TypeMFuncEnum.NOT_SETUP)
-                    comboBox.Value = comboBox.Items[(int)fv.Type];
+                // TO DO: Хранить в свойстве класса, а не локально
+                dataGridViewFuzzyVar.Rows[i].Cells[2].Value = ((int)fv.Type).ToString();
+                dataGridViewFuzzyVar.Rows[i].Cells[3].Value = DatabaseManager.Instance.GetTypeMFunc((long)fv.Type).Name;
 
-                var buttonColor = dataGridViewFuzzyVar.Rows[i].Cells[3] as DataGridViewButtonCell;
+                dataGridViewFuzzyVar.Rows[i].Cells[4].Value = ((int)fv.Bound).ToString();
+                dataGridViewFuzzyVar.Rows[i].Cells[5].Value = DatabaseManager.Instance.GetBoundaryType((long)fv.Bound).Name;
+
+                var buttonColor = dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
                 buttonColor.FlatStyle = FlatStyle.Popup;
-                buttonColor.Style.BackColor = fv.Color;
-                //buttonColor.Style.ForeColor = fv.Color;
+                buttonColor.Style.BackColor = fv.СolorLine;
 
-                dataGridViewFuzzyVar.Rows[i].Cells[4].Value = fv.IdTriangulare;
-                dataGridViewFuzzyVar.Rows[i].Cells[5].Value = fv.IdTrapezoidal;
-                dataGridViewFuzzyVar.Rows[i].Cells[6].Value = fv.IdGaussian;
+                dataGridViewFuzzyVar.Rows[i].Cells[7].Value = fv.IdTriangulare;
+                dataGridViewFuzzyVar.Rows[i].Cells[8].Value = fv.IdTrapezoidal;
+                dataGridViewFuzzyVar.Rows[i].Cells[9].Value = fv.IdGaussian;
             }
         }
 
@@ -116,9 +118,9 @@ namespace MESysWin.GUI
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            if (dataGridViewFuzzyVar.SelectedRows.Count > 0)
+            if (dataGridViewFuzzyVar.SelectedCells.Count > 0)
             {
-                var i = dataGridViewFuzzyVar.SelectedRows[0].Index;
+                var i = dataGridViewFuzzyVar.SelectedCells[0].RowIndex;
                 var id_in_db = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[0].Value);
 
                 if (MessageBox.Show("Вы действительно хотите удалить запись о нечеткой переменной из базы знаний, из базы данных и из приложения?\n",
@@ -192,6 +194,36 @@ namespace MESysWin.GUI
                     prototypeSymtom.ReasoningTop = res;
                     if (!prototypeSymtom.CheckData()) prototypeSymtom.ReasoningTop = old;
                 }
+            }
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewFuzzyVar.SelectedCells.Count > 0)
+            {
+                var i = dataGridViewFuzzyVar.SelectedCells[0].RowIndex;
+                var id_in_db = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[0].Value);
+
+                var colorBut = dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
+
+                var prototypeFuzzy = new FuzzyVariable(id_in_db,
+                    prototypeSymtom.ID,
+                    Convert.ToString(dataGridViewFuzzyVar.Rows[i].Cells[1].Value),
+                    colorBut.Style.BackColor);
+
+                prototypeFuzzy.Type = (TypeMFuncEnum)Convert.ToInt32(dataGridViewFuzzyVar.Rows[i].Cells[2].Value);
+                prototypeFuzzy.Bound = (BoundaryTypeEnum)Convert.ToInt32(dataGridViewFuzzyVar.Rows[i].Cells[4].Value);
+
+                prototypeFuzzy.IdTriangulare = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[7].Value);
+                prototypeFuzzy.IdTrapezoidal = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[8].Value);
+                prototypeFuzzy.IdGaussian = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);
+
+                var FuzzyForm = new FuzzyVarForm(prototypeSymtom, prototypeFuzzy);
+                FuzzyForm.Owner = this;
+                FuzzyForm.ShowDialog();
+            } else
+            {
+                MessageBox.Show("Ничего не выделено для редактирования!", "Объект не выделен", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
