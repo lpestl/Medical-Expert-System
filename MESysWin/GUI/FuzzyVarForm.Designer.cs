@@ -69,6 +69,7 @@
             this.labelTrapez = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelStopTab = new System.Windows.Forms.Panel();
+            this.buttonRedraw = new System.Windows.Forms.Button();
             this.groupBoxSettingFuzzy.SuspendLayout();
             this.tabControlType.SuspendLayout();
             this.tabPageGauss.SuspendLayout();
@@ -108,8 +109,6 @@
             // 
             // groupBoxSettingFuzzy
             // 
-            this.groupBoxSettingFuzzy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBoxSettingFuzzy.Controls.Add(this.comboBoxBound);
             this.groupBoxSettingFuzzy.Controls.Add(this.labelBound);
             this.groupBoxSettingFuzzy.Controls.Add(this.buttonColor);
@@ -219,7 +218,8 @@
             // tabControlType
             // 
             this.tabControlType.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabControlType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tabControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControlType.Controls.Add(this.tabPageGauss);
             this.tabControlType.Controls.Add(this.tabPageTriangl);
             this.tabControlType.Controls.Add(this.tabPageTrapez);
@@ -491,11 +491,24 @@
             this.panelStopTab.Size = new System.Drawing.Size(326, 36);
             this.panelStopTab.TabIndex = 8;
             // 
+            // buttonRedraw
+            // 
+            this.buttonRedraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRedraw.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonRedraw.Location = new System.Drawing.Point(318, 429);
+            this.buttonRedraw.Name = "buttonRedraw";
+            this.buttonRedraw.Size = new System.Drawing.Size(151, 23);
+            this.buttonRedraw.TabIndex = 9;
+            this.buttonRedraw.Text = "Пересчитать график";
+            this.buttonRedraw.UseVisualStyleBackColor = false;
+            this.buttonRedraw.Click += new System.EventHandler(this.buttonRedraw_Click);
+            // 
             // FuzzyVarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.buttonRedraw);
             this.Controls.Add(this.panelStopTab);
             this.Controls.Add(this.tabControlType);
             this.Controls.Add(this.panelGraph);
@@ -564,5 +577,6 @@
         private System.Windows.Forms.Panel panelStopTab;
         private System.Windows.Forms.ComboBox comboBoxBound;
         private System.Windows.Forms.Label labelBound;
+        private System.Windows.Forms.Button buttonRedraw;
     }
 }

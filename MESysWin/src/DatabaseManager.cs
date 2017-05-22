@@ -170,6 +170,12 @@ namespace MESysWin.src
                     "FOREIGN KEY (id_triangl_mf) REFERENCES triangular_mf(id_triangl_mf)",
                     "FOREIGN KEY (id_trapez_mf) REFERENCES trapezoidal_mf(id_trapez_mf)",
                     "FOREIGN KEY (id_gauss_mf) REFERENCES gauss_mf(id_gauss_mf)");
+
+                // Создадим таблицу Quantifier, если она не создана
+                CreateTable(conn, "quantifier",
+                    "id_quantifier INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "name TEXT",
+                    "rule TEXT");
             }
         }
 
@@ -368,11 +374,11 @@ namespace MESysWin.src
                             break;
                     }
 
-                    fv.СolorLine = clr;
+                    fv.ColorLine = clr;
 
-                    try { fv.IdTriangulare = r.GetInt64(5); } catch { fv.IdTriangulare = -1; }
-                    try { fv.IdTrapezoidal = r.GetInt64(6); } catch { fv.IdTrapezoidal = -1; }
-                    try { fv.IdGaussian = r.GetInt64(7); } catch { fv.IdGaussian = -1; }
+                    try { fv.TrianglParam.ID = r.GetInt64(5); } catch { fv.TrianglParam.ID = -1; }
+                    try { fv.TrapezParam.ID = r.GetInt64(6); } catch { fv.TrapezParam.ID = -1; }
+                    try { fv.GaussParam.ID = r.GetInt64(7); } catch { fv.GaussParam.ID = -1; }
 
                     reslist.Add(fv);
                 }
@@ -910,12 +916,12 @@ namespace MESysWin.src
             cmd.Parameters.AddWithValue("@name", fv.Name);
             cmd.Parameters.AddWithValue("@id_mf_type", (int)fv.Type);
             cmd.Parameters.AddWithValue("@id_bound", (int)fv.Bound);
-            cmd.Parameters.AddWithValue("@id_triangl_mf", fv.IdTriangulare);
-            cmd.Parameters.AddWithValue("@id_trapez_mf", fv.IdTrapezoidal);
-            cmd.Parameters.AddWithValue("@id_gauss_mf", fv.IdGaussian);
-            cmd.Parameters.AddWithValue("@r", fv.СolorLine.R);
-            cmd.Parameters.AddWithValue("@g", fv.СolorLine.G);
-            cmd.Parameters.AddWithValue("@b", fv.СolorLine.B);
+            cmd.Parameters.AddWithValue("@id_triangl_mf", fv.TrianglParam.ID);
+            cmd.Parameters.AddWithValue("@id_trapez_mf", fv.TrapezParam.ID);
+            cmd.Parameters.AddWithValue("@id_gauss_mf", fv.GaussParam.ID);
+            cmd.Parameters.AddWithValue("@r", fv.ColorLine.R);
+            cmd.Parameters.AddWithValue("@g", fv.ColorLine.G);
+            cmd.Parameters.AddWithValue("@b", fv.ColorLine.B);
 
             try
             {
@@ -951,12 +957,12 @@ namespace MESysWin.src
             cmd.Parameters.AddWithValue("@name", fv.Name);
             cmd.Parameters.AddWithValue("@id_mf_type", (int)fv.Type);
             cmd.Parameters.AddWithValue("@id_bound", (int)fv.Bound);
-            cmd.Parameters.AddWithValue("@id_triangl_mf", fv.IdTriangulare);
-            cmd.Parameters.AddWithValue("@id_trapez_mf", fv.IdTrapezoidal);
-            cmd.Parameters.AddWithValue("@id_gauss_mf", fv.IdGaussian);
-            cmd.Parameters.AddWithValue("@r", fv.СolorLine.R);
-            cmd.Parameters.AddWithValue("@g", fv.СolorLine.G);
-            cmd.Parameters.AddWithValue("@b", fv.СolorLine.B);
+            cmd.Parameters.AddWithValue("@id_triangl_mf", fv.TrianglParam.ID);
+            cmd.Parameters.AddWithValue("@id_trapez_mf", fv.TrapezParam.ID);
+            cmd.Parameters.AddWithValue("@id_gauss_mf", fv.GaussParam.ID);
+            cmd.Parameters.AddWithValue("@r", fv.ColorLine.R);
+            cmd.Parameters.AddWithValue("@g", fv.ColorLine.G);
+            cmd.Parameters.AddWithValue("@b", fv.ColorLine.B);
 
             try
             {
@@ -1099,5 +1105,39 @@ namespace MESysWin.src
             return res;
         }
 
+        public List<Quantifier> GetQuantifiers()
+        {
+            var resList = new List<Quantifier>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_quantifier, name, rule FROM quantifier";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new Quantifier(r.GetString(1), (QuantifierEnum)r.GetInt64(0));
+                    curr.ID = r.GetInt64(0);
+                    curr.Rule = r.GetString(2);
+
+                    resList.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+            }
+
+            CloseConnection();
+
+            return resList;
+        }
     }
 }

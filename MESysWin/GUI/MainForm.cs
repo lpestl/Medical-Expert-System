@@ -59,5 +59,12 @@ namespace MESysWin
             var typeForm = new BoundaryTypeForm();
             typeForm.Show();
         }
+
+        private void quantToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Log.Print("Click Menu -> KnowBase -> Quant", "mainForm", Log.type.INFO);
+            var quantForm = new QuantForm();
+            quantForm.Show();
+        }
     }
 }

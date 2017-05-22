@@ -13,9 +13,17 @@ namespace MESysWin.GUI
 {
     public partial class SymptomEditing : Form
     {
+        Graphics graphics;
+        BufferedGraphics bufferedGraphics;
+        BufferedGraphicsContext bufferedGraphicsContext;
+
         public SymptomEditing()
         {
             InitializeComponent();
+
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
 
             prototypeSymtom = null;
 
@@ -23,12 +31,22 @@ namespace MESysWin.GUI
             buttonAdd.Enabled = false;
             buttonRemove.Enabled = false;
             buttonEdit.Enabled = false;
+
+            isInit = true;
         }
 
+        private bool isInit = false;
         private Symptom prototypeSymtom;
+
+        public List<FuzzyVariable> FuzzyList;
+
         public SymptomEditing(Symptom smp)
         {
             InitializeComponent();
+
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
 
             prototypeSymtom = smp;
 
@@ -36,7 +54,7 @@ namespace MESysWin.GUI
             textBoxBottom.Text = prototypeSymtom.ReasoningBottom.ToString();
             textBoxTop.Text = prototypeSymtom.ReasoningTop.ToString();
 
-            var FuzzyList = DatabaseManager.Instance.GetFuzzyVariables(prototypeSymtom.ID);
+            FuzzyList = DatabaseManager.Instance.GetFuzzyVariables(prototypeSymtom.ID);
             foreach (FuzzyVariable fv in FuzzyList)
             {
                 string[] row = new string[] { fv.ID.ToString(), fv.Name/*, smp.ReasoningBottom.ToString(), smp.ReasoningTop.ToString()*/ };
@@ -51,24 +69,138 @@ namespace MESysWin.GUI
 
                 var buttonColor = dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
                 buttonColor.FlatStyle = FlatStyle.Popup;
-                buttonColor.Style.BackColor = fv.СolorLine;
+                buttonColor.Style.BackColor = fv.ColorLine;
 
-                dataGridViewFuzzyVar.Rows[i].Cells[7].Value = fv.IdTriangulare;
-                dataGridViewFuzzyVar.Rows[i].Cells[8].Value = fv.IdTrapezoidal;
-                dataGridViewFuzzyVar.Rows[i].Cells[9].Value = fv.IdGaussian;
+                dataGridViewFuzzyVar.Rows[i].Cells[7].Value = fv.TrianglParam.ID;
+                if (fv.TrianglParam.ID >= 0)
+                {
+                    var TrianglP = DatabaseManager.Instance.GetTriangulareMFuncParams(fv.TrianglParam.ID);
+                    fv.TrianglParam = TrianglP;
+                }
+                dataGridViewFuzzyVar.Rows[i].Cells[8].Value = fv.TrapezParam.ID;
+                if (fv.TrapezParam.ID >= 0)
+                {
+                    var TrapezP = DatabaseManager.Instance.GetTrapezoidalMFuncParams(fv.TrapezParam.ID);
+                    fv.TrapezParam = TrapezP;
+                }
+                dataGridViewFuzzyVar.Rows[i].Cells[9].Value = fv.GaussParam.ID;
+                if (fv.GaussParam.ID >= 0)
+                {
+                    var GaussP = DatabaseManager.Instance.GetGaussMFuncParams(fv.GaussParam.ID);
+                    fv.GaussParam = GaussP;
+                }
             }
+
+            isInit = true;
         }
 
         private void panelGraph_Paint(object sender, PaintEventArgs e)
         {
-            GraphicOnFrom.PaintGrid(panelGraph);
-            GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+            //GraphicOnFrom.PaintGrid(panelGraph);
+            //GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+            DrawGraphs();
         }
 
         private void SymptomEditing_Resize(object sender, EventArgs e)
         {
-            GraphicOnFrom.PaintGrid(panelGraph);
-            GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
+
+            //GraphicOnFrom.PaintGrid(panelGraph);
+            //GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+            DrawGraphs();
+        }
+
+        private void buttonRedraw_Click(object sender, EventArgs e)
+        {
+            //GraphicOnFrom.PaintGrid(panelGraph);
+            //GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+            DrawGraphs();
+
+        }
+
+        private void DrawGraphs()
+        {
+            bufferedGraphics.Graphics.Clear(panelGraph.BackColor);
+            
+            GraphicOnFrom.PaintGrid(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height);
+            if (!isInit) { bufferedGraphics.Render(); return; }
+            GraphicOnFrom.DrawBottomScale(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
+
+            int i = 0;
+            foreach (var fv in FuzzyList)
+            {
+                switch (fv.Type)
+                {
+                    case TypeMFuncEnum.GAUSS:
+                        GraphicOnFrom.DrawGaussMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.ColorLine,
+                            fv.GaussParam.C,
+                            fv.GaussParam.Sigma,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound);
+
+                        GraphicOnFrom.DrawGaussPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.Name,
+                            fv.ColorLine,
+                            fv.GaussParam.C,
+                            fv.GaussParam.Sigma,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound, i);
+                        break;
+                    case TypeMFuncEnum.TRIANGULARE:
+                        GraphicOnFrom.DrawTrianglMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.ColorLine,
+                            fv.TrianglParam.A,
+                            fv.TrianglParam.B,
+                            fv.TrianglParam.C,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound);
+
+                        GraphicOnFrom.DrawTrianglPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.Name,
+                            fv.ColorLine,
+                            fv.TrianglParam.A,
+                            fv.TrianglParam.B,
+                            fv.TrianglParam.C,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound, false, i);
+                        break;
+                    case TypeMFuncEnum.TRAPEZOIDAL:
+                        GraphicOnFrom.DrawTrapezMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.ColorLine,
+                            fv.TrapezParam.A,
+                            fv.TrapezParam.B,
+                            fv.TrapezParam.C,
+                            fv.TrapezParam.D,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound);
+
+                        GraphicOnFrom.DrawTrapezoidalPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                            fv.Name,
+                            fv.ColorLine,
+                            fv.TrapezParam.A,
+                            fv.TrapezParam.B,
+                            fv.TrapezParam.C,
+                            fv.TrapezParam.D,
+                            prototypeSymtom.ReasoningBottom,
+                            prototypeSymtom.ReasoningTop,
+                            fv.Bound, i);
+                        break;
+                    default:
+                        //MessageBox.Show("I don`t know this variable type", "Variable type error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                }
+                i++;
+            }
+            bufferedGraphics.Render();
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
@@ -134,18 +266,20 @@ namespace MESysWin.GUI
                         buttonColor.Style.BackColor);*/
 
                     long j;
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[4].Value);
+                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[7].Value);
                     if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
                         "triangular_mf", "id_triangl_mf");
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[5].Value);
+                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[8].Value);
                     if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
                         "trapezoidal_mf", "id_trapez_mf");
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[6].Value);
+                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);
                     if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
                         "gauss_mf", "id_gauss_mf");
 
                     DatabaseManager.Instance.DeleteFromTable(id_in_db, "fuzzy_variable", "id_var");
                     dataGridViewFuzzyVar.Rows.RemoveAt(i);
+
+                    FuzzyList.Remove(FuzzyList.Find(x => x.ID == id_in_db));
                 }
 
             }
@@ -161,14 +295,7 @@ namespace MESysWin.GUI
             FuzzyForm.Owner = this;
             FuzzyForm.ShowDialog();
         }
-
-        private void buttonRedraw_Click(object sender, EventArgs e)
-        {
-            GraphicOnFrom.PaintGrid(panelGraph);
-            GraphicOnFrom.DrawBottomScale(panelGraph, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
-
-        }
-
+        
         private void textBoxBottom_TextChanged(object sender, EventArgs e)
         {
             if (prototypeSymtom != null)
@@ -204,7 +331,8 @@ namespace MESysWin.GUI
                 var i = dataGridViewFuzzyVar.SelectedCells[0].RowIndex;
                 var id_in_db = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[0].Value);
 
-                var colorBut = dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
+                var prototypeFuzzy = FuzzyList.Find(x => x.ID == id_in_db);
+                /*var colorBut = dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
 
                 var prototypeFuzzy = new FuzzyVariable(id_in_db,
                     prototypeSymtom.ID,
@@ -216,7 +344,7 @@ namespace MESysWin.GUI
 
                 prototypeFuzzy.IdTriangulare = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[7].Value);
                 prototypeFuzzy.IdTrapezoidal = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[8].Value);
-                prototypeFuzzy.IdGaussian = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);
+                prototypeFuzzy.IdGaussian = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);*/
 
                 var FuzzyForm = new FuzzyVarForm(prototypeSymtom, prototypeFuzzy);
                 FuzzyForm.Owner = this;

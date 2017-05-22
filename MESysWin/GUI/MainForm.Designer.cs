@@ -39,9 +39,10 @@
             this.kbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lingVarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BoundaryTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.помощьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.BoundaryTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quantToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -106,7 +107,8 @@
             this.kbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lingVarToolStripMenuItem,
             this.typeToolStripMenuItem,
-            this.BoundaryTypeToolStripMenuItem});
+            this.BoundaryTypeToolStripMenuItem,
+            this.quantToolStripMenuItem});
             this.kbToolStripMenuItem.Name = "kbToolStripMenuItem";
             this.kbToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.kbToolStripMenuItem.Text = "База знаний";
@@ -120,10 +122,19 @@
             // 
             // typeToolStripMenuItem
             // 
+            this.typeToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
             this.typeToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.typeToolStripMenuItem.Text = "Типы функций принадлежности";
             this.typeToolStripMenuItem.Click += new System.EventHandler(this.typeToolStripMenuItem_Click);
+            // 
+            // BoundaryTypeToolStripMenuItem
+            // 
+            this.BoundaryTypeToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.BoundaryTypeToolStripMenuItem.Name = "BoundaryTypeToolStripMenuItem";
+            this.BoundaryTypeToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.BoundaryTypeToolStripMenuItem.Text = "Пограничные типы функций принадлежности";
+            this.BoundaryTypeToolStripMenuItem.Click += new System.EventHandler(this.BoundaryTypeToolStripMenuItem_Click);
             // 
             // помощьToolStripMenuItem
             // 
@@ -139,12 +150,12 @@
             this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе...";
             // 
-            // BoundaryTypeToolStripMenuItem
+            // quantToolStripMenuItem
             // 
-            this.BoundaryTypeToolStripMenuItem.Name = "BoundaryTypeToolStripMenuItem";
-            this.BoundaryTypeToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
-            this.BoundaryTypeToolStripMenuItem.Text = "Пограничные типы функций принадлежности";
-            this.BoundaryTypeToolStripMenuItem.Click += new System.EventHandler(this.BoundaryTypeToolStripMenuItem_Click);
+            this.quantToolStripMenuItem.Name = "quantToolStripMenuItem";
+            this.quantToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.quantToolStripMenuItem.Text = "Квантификаторы";
+            this.quantToolStripMenuItem.Click += new System.EventHandler(this.quantToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -181,6 +192,7 @@
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem typeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem BoundaryTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quantToolStripMenuItem;
     }
 }
 

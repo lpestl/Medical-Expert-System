@@ -13,10 +13,17 @@ namespace MESysWin.GUI
 {
     public partial class FuzzyVarForm : Form
     {
+        Graphics graphics;
+        BufferedGraphics bufferedGraphics;
+        BufferedGraphicsContext bufferedGraphicsContext;
+
         public FuzzyVarForm(Symptom par)
         {
             InitializeComponent();
-            DoubleBuffered = true;
+
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
 
             parentSymptom = par;
 
@@ -58,7 +65,10 @@ namespace MESysWin.GUI
         public FuzzyVarForm(Symptom par, FuzzyVariable curr)
         {
             InitializeComponent();
-            DoubleBuffered = true;
+
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
 
             parentSymptom = par;
 
@@ -86,31 +96,31 @@ namespace MESysWin.GUI
             }
             comboBoxBound.SelectedIndex = (int)prototypeFuzzy.Bound;
 
-            buttonColor.BackColor = prototypeFuzzy.СolorLine;
+            buttonColor.BackColor = prototypeFuzzy.ColorLine;
 
-            if (prototypeFuzzy.IdGaussian < 0) {
+            if (prototypeFuzzy.GaussParam.ID < 0) {
                 textBoxGC.Text = (w / 2 + parentSymptom.ReasoningBottom).ToString();
                 textBoxSigma.Text = (w / 10).ToString();
             } else
             {
-                var param = DatabaseManager.Instance.GetGaussMFuncParams(prototypeFuzzy.IdGaussian);
-                textBoxGC.Text = param.C.ToString();
-                textBoxSigma.Text = param.Sigma.ToString();
+                //var param = DatabaseManager.Instance.GetGaussMFuncParams(prototypeFuzzy.GaussParam.ID);
+                textBoxGC.Text = prototypeFuzzy.GaussParam.C.ToString();
+                textBoxSigma.Text = prototypeFuzzy.GaussParam.Sigma.ToString();
             }
 
-            if (prototypeFuzzy.IdTriangulare < 0) {
+            if (prototypeFuzzy.TrianglParam.ID < 0) {
                 textBoxTrianglA.Text = (step + parentSymptom.ReasoningBottom).ToString();
                 textBoxTrianglB.Text = (w / 2 + parentSymptom.ReasoningBottom).ToString();
                 textBoxTrianglC.Text = (4 * step + parentSymptom.ReasoningBottom).ToString();
             } else
             {
-                var param = DatabaseManager.Instance.GetTriangulareMFuncParams(prototypeFuzzy.IdTriangulare);
-                textBoxTrianglA.Text = param.A.ToString();
-                textBoxTrianglB.Text = param.B.ToString();
-                textBoxTrianglC.Text = param.C.ToString();
+                //var param = DatabaseManager.Instance.GetTriangulareMFuncParams(prototypeFuzzy.TrianglParam.ID);
+                textBoxTrianglA.Text = prototypeFuzzy.TrianglParam.A.ToString();
+                textBoxTrianglB.Text = prototypeFuzzy.TrianglParam.B.ToString();
+                textBoxTrianglC.Text = prototypeFuzzy.TrianglParam.C.ToString();
             }
 
-            if (prototypeFuzzy.IdTrapezoidal < 0)
+            if (prototypeFuzzy.TrapezParam.ID < 0)
             {
                 textBoxTrapA.Text = (step + parentSymptom.ReasoningBottom).ToString();
                 textBoxTrapB.Text = (2 * step + parentSymptom.ReasoningBottom).ToString();
@@ -118,11 +128,11 @@ namespace MESysWin.GUI
                 textBoxTrapD.Text = (4 * step + parentSymptom.ReasoningBottom).ToString();
             } else
             {
-                var param = DatabaseManager.Instance.GetTrapezoidalMFuncParams(prototypeFuzzy.IdTrapezoidal);
-                textBoxTrapA.Text = param.A.ToString();
-                textBoxTrapB.Text = param.B.ToString();
-                textBoxTrapC.Text = param.C.ToString();
-                textBoxTrapD.Text = param.D.ToString();
+                //var param = DatabaseManager.Instance.GetTrapezoidalMFuncParams(prototypeFuzzy.TrapezParam.ID);
+                textBoxTrapA.Text = prototypeFuzzy.TrapezParam.A.ToString();
+                textBoxTrapB.Text = prototypeFuzzy.TrapezParam.B.ToString();
+                textBoxTrapC.Text = prototypeFuzzy.TrapezParam.C.ToString();
+                textBoxTrapD.Text = prototypeFuzzy.TrapezParam.D.ToString();
             }
 
             isInit = true;
@@ -141,6 +151,10 @@ namespace MESysWin.GUI
 
         private void FuzzyVarForm_Resize(object sender, EventArgs e)
         {
+            graphics = panelGraph.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, panelGraph.Width, panelGraph.Height));
+
             DrawGraph();
         }
 
@@ -150,15 +164,17 @@ namespace MESysWin.GUI
 
         private void DrawGraph()
         {
-            GraphicOnFrom.PaintGrid(panelGraph);
-            GraphicOnFrom.DrawBottomScale(panelGraph, parentSymptom.ReasoningBottom, parentSymptom.ReasoningTop);
+            bufferedGraphics.Graphics.Clear(panelGraph.BackColor);
+
+            GraphicOnFrom.PaintGrid(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height);
+            GraphicOnFrom.DrawBottomScale(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, parentSymptom.ReasoningBottom, parentSymptom.ReasoningTop);
 
             if (!isInit) return;
 
             switch ((TypeMFuncEnum)comboBoxType.SelectedIndex)
             {
                 case TypeMFuncEnum.GAUSS:
-                    GraphicOnFrom.DrawGaussMF(panelGraph, 
+                    GraphicOnFrom.DrawGaussMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, 
                         buttonColor.BackColor, 
                         Convert.ToDouble(textBoxGC.Text), 
                         Convert.ToDouble(textBoxSigma.Text), 
@@ -166,8 +182,9 @@ namespace MESysWin.GUI
                         parentSymptom.ReasoningTop,
                         (BoundaryTypeEnum)comboBoxBound.SelectedIndex);
 
-                    GraphicOnFrom.DrawGaussPoints(panelGraph,
-                        mouseX, mouseY,
+                    GraphicOnFrom.DrawGaussPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, 
+                        textBoxName.Text, 
+                        buttonColor.BackColor,
                         Convert.ToDouble(textBoxGC.Text),
                         Convert.ToDouble(textBoxSigma.Text),
                         parentSymptom.ReasoningBottom,
@@ -175,7 +192,7 @@ namespace MESysWin.GUI
                         (BoundaryTypeEnum)comboBoxBound.SelectedIndex);
                     break;
                 case TypeMFuncEnum.TRIANGULARE:
-                    GraphicOnFrom.DrawTrianglMF(panelGraph, 
+                    GraphicOnFrom.DrawTrianglMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, 
                         buttonColor.BackColor,
                         Convert.ToDouble(textBoxTrianglA.Text), 
                         Convert.ToDouble(textBoxTrianglB.Text),
@@ -183,9 +200,30 @@ namespace MESysWin.GUI
                         parentSymptom.ReasoningBottom, 
                         parentSymptom.ReasoningTop,
                         (BoundaryTypeEnum)comboBoxBound.SelectedIndex);
+
+                    GraphicOnFrom.DrawTrianglPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                        textBoxName.Text,
+                        buttonColor.BackColor,
+                        Convert.ToDouble(textBoxTrianglA.Text),
+                        Convert.ToDouble(textBoxTrianglB.Text),
+                        Convert.ToDouble(textBoxTrianglC.Text),
+                        parentSymptom.ReasoningBottom,
+                        parentSymptom.ReasoningTop,
+                        (BoundaryTypeEnum)comboBoxBound.SelectedIndex);
                     break;
                 case TypeMFuncEnum.TRAPEZOIDAL:
-                    GraphicOnFrom.DrawTrapezMF(panelGraph,
+                    GraphicOnFrom.DrawTrapezMF(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                        buttonColor.BackColor,
+                        Convert.ToDouble(textBoxTrapA.Text),
+                        Convert.ToDouble(textBoxTrapB.Text),
+                        Convert.ToDouble(textBoxTrapC.Text),
+                        Convert.ToDouble(textBoxTrapD.Text),
+                        parentSymptom.ReasoningBottom,
+                        parentSymptom.ReasoningTop,
+                        (BoundaryTypeEnum)comboBoxBound.SelectedIndex);
+
+                    GraphicOnFrom.DrawTrapezoidalPoints(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height,
+                        textBoxName.Text,
                         buttonColor.BackColor,
                         Convert.ToDouble(textBoxTrapA.Text),
                         Convert.ToDouble(textBoxTrapB.Text),
@@ -199,6 +237,8 @@ namespace MESysWin.GUI
                     //MessageBox.Show("I don`t know this variable type", "Variable type error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
+
+            bufferedGraphics.Render();
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
@@ -237,11 +277,7 @@ namespace MESysWin.GUI
                 newFuzzy = new FuzzyVariable(prototypeFuzzy.ID, 
                     parentSymptom.ID,
                     textBoxName.Text,
-                    buttonColor.BackColor);
-
-                newFuzzy.IdGaussian = prototypeFuzzy.IdGaussian;
-                newFuzzy.IdTriangulare = prototypeFuzzy.IdTriangulare;
-                newFuzzy.IdTrapezoidal = prototypeFuzzy.IdTrapezoidal;
+                    buttonColor.BackColor);                
             } else
             {
                 newFuzzy = new FuzzyVariable(-1, 
@@ -253,56 +289,64 @@ namespace MESysWin.GUI
             newFuzzy.Type = (TypeMFuncEnum)comboBoxType.SelectedIndex;
             newFuzzy.Bound = (BoundaryTypeEnum)comboBoxBound.SelectedIndex;
 
-            var mf_params_gauss = new GaussMFuncParams(double.Parse(textBoxGC.Text),
+            newFuzzy.GaussParam = new GaussMFuncParams(double.Parse(textBoxGC.Text),
                                 double.Parse(textBoxSigma.Text));
-            var mf_params_triangl = new TriangulareMFuncParams(double.Parse(textBoxTrianglA.Text),
+            newFuzzy.TrianglParam = new TriangulareMFuncParams(double.Parse(textBoxTrianglA.Text),
                                 double.Parse(textBoxTrianglB.Text),
                                 double.Parse(textBoxTrianglC.Text));
-            var mf_params_trapez = new TrapezoidalMFuncParams(double.Parse(textBoxTrapA.Text),
+            newFuzzy.TrapezParam = new TrapezoidalMFuncParams(double.Parse(textBoxTrapA.Text),
                                 double.Parse(textBoxTrapB.Text),
                                 double.Parse(textBoxTrapC.Text),
                                 double.Parse(textBoxTrapD.Text));
+
+            if (prototypeFuzzy != null)
+            {
+                newFuzzy.GaussParam.ID = prototypeFuzzy.GaussParam.ID;
+                newFuzzy.TrianglParam.ID = prototypeFuzzy.TrianglParam.ID;
+                newFuzzy.TrapezParam.ID = prototypeFuzzy.TrapezParam.ID;
+            }
+
 
             if (newFuzzy.CheckData())
             {
                 switch(newFuzzy.Type)
                 {
                     case TypeMFuncEnum.GAUSS:
-                        if ((prototypeFuzzy != null) && (prototypeFuzzy.IdGaussian >= 0))
+                        if ((prototypeFuzzy != null) && (prototypeFuzzy.GaussParam.ID >= 0))
                         {
-                            mf_params_gauss.ID = newFuzzy.IdGaussian = prototypeFuzzy.IdGaussian;
-                            DatabaseManager.Instance.UpdateMF(mf_params_gauss);
+                            newFuzzy.GaussParam.ID = prototypeFuzzy.GaussParam.ID;
+                            DatabaseManager.Instance.UpdateMF(newFuzzy.GaussParam);
                         }
                         else
                         {                            
-                            newFuzzy.IdGaussian = DatabaseManager.Instance.InsertMF(mf_params_gauss);
+                            newFuzzy.GaussParam.ID = DatabaseManager.Instance.InsertMF(newFuzzy.GaussParam);
                             //newFuzzy.IdGaussian = DatabaseManager.Instance.InsertMF(double.Parse(textBoxGC.Text),
                             //    double.Parse(textBoxSigma.Text));
                         }
                         break;
                     case TypeMFuncEnum.TRIANGULARE:
-                        if ((prototypeFuzzy != null) && (prototypeFuzzy.IdTriangulare >= 0))
+                        if ((prototypeFuzzy != null) && (prototypeFuzzy.TrianglParam.ID >= 0))
                         {
-                            mf_params_triangl.ID = newFuzzy.IdTriangulare = prototypeFuzzy.IdTriangulare;
-                            DatabaseManager.Instance.UpdateMF(mf_params_triangl);
+                            newFuzzy.TrianglParam.ID = prototypeFuzzy.TrianglParam.ID;
+                            DatabaseManager.Instance.UpdateMF(newFuzzy.TrianglParam);
                         }
                         else
                         {                            
-                            newFuzzy.IdTriangulare = DatabaseManager.Instance.InsertMF(mf_params_triangl);
+                            newFuzzy.TrianglParam.ID = DatabaseManager.Instance.InsertMF(newFuzzy.TrianglParam);
                             //newFuzzy.IdTriangulare = DatabaseManager.Instance.InsertMF(double.Parse(textBoxTrianglA.Text),
                             //    double.Parse(textBoxTrianglB.Text),
                             //    double.Parse(textBoxTrianglC.Text));
                         }
                         break;
                     case TypeMFuncEnum.TRAPEZOIDAL:
-                        if ((prototypeFuzzy != null) && (prototypeFuzzy.IdTrapezoidal >= 0))
+                        if ((prototypeFuzzy != null) && (prototypeFuzzy.TrapezParam.ID >= 0))
                         {
-                            mf_params_trapez.ID = newFuzzy.IdTrapezoidal = prototypeFuzzy.IdTrapezoidal;
-                            DatabaseManager.Instance.UpdateMF(mf_params_trapez);
+                            newFuzzy.TrapezParam.ID = prototypeFuzzy.TrapezParam.ID;
+                            DatabaseManager.Instance.UpdateMF(newFuzzy.TrapezParam);
                         }
                         else
                         {                            
-                            newFuzzy.IdTrapezoidal = DatabaseManager.Instance.InsertMF(mf_params_trapez);
+                            newFuzzy.TrapezParam.ID = DatabaseManager.Instance.InsertMF(newFuzzy.TrapezParam);
                             //newFuzzy.IdTrapezoidal = DatabaseManager.Instance.InsertMF(double.Parse(textBoxTrapA.Text),
                             //    double.Parse(textBoxTrapB.Text),
                             //    double.Parse(textBoxTrapC.Text),
@@ -325,6 +369,8 @@ namespace MESysWin.GUI
 
                     parent.dataGridViewFuzzyVar.Rows[i].Cells[0].Value = prototypeFuzzy.ID.ToString();
                     parent.dataGridViewFuzzyVar.Rows[i].Cells[1].Value = prototypeFuzzy.Name;
+
+                    parent.FuzzyList.Find(x => x.ID == prototypeFuzzy.ID).Set(prototypeFuzzy);
                 }
                 else
                 {
@@ -333,6 +379,8 @@ namespace MESysWin.GUI
 
                     string[] row = new string[] { prototypeFuzzy.ID.ToString(), prototypeFuzzy.Name };
                     i = parent.dataGridViewFuzzyVar.Rows.Add(row);
+
+                    parent.FuzzyList.Add(prototypeFuzzy);
                 }
 
                 // TO DO: Хранить в свойстве класса, а не локально
@@ -344,11 +392,11 @@ namespace MESysWin.GUI
 
                 var buttonColor = parent.dataGridViewFuzzyVar.Rows[i].Cells[6] as DataGridViewButtonCell;
                 buttonColor.FlatStyle = FlatStyle.Flat;
-                buttonColor.Style.BackColor = prototypeFuzzy.СolorLine;
+                buttonColor.Style.BackColor = prototypeFuzzy.ColorLine;
 
-                parent.dataGridViewFuzzyVar.Rows[i].Cells[7].Value = prototypeFuzzy.IdTriangulare.ToString();
-                parent.dataGridViewFuzzyVar.Rows[i].Cells[8].Value = prototypeFuzzy.IdTrapezoidal.ToString();
-                parent.dataGridViewFuzzyVar.Rows[i].Cells[9].Value = prototypeFuzzy.IdGaussian.ToString();
+                parent.dataGridViewFuzzyVar.Rows[i].Cells[7].Value = prototypeFuzzy.TrapezParam.ID.ToString();
+                parent.dataGridViewFuzzyVar.Rows[i].Cells[8].Value = prototypeFuzzy.TrapezParam.ID.ToString();
+                parent.dataGridViewFuzzyVar.Rows[i].Cells[9].Value = prototypeFuzzy.GaussParam.ID.ToString();
                 
                 this.Close();
             }
@@ -383,6 +431,11 @@ namespace MESysWin.GUI
             mouseX = e.X;
             mouseY = e.Y;
 
+            //DrawGraph();
+        }
+
+        private void buttonRedraw_Click(object sender, EventArgs e)
+        {
             DrawGraph();
         }
     }

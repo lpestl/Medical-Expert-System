@@ -19,22 +19,41 @@ namespace MESysWin.src
 
         public BoundaryTypeEnum Bound { get; set; }
 
-        public long IdTriangulare { get; set; }
+        //public long IdTriangulare { get; set; }
+        public GaussMFuncParams GaussParam { get; set; }
 
-        public long IdTrapezoidal { get; set; }
+        //public long IdTrapezoidal { get; set; }
+        public TriangulareMFuncParams TrianglParam { get; set; }
 
-        public long IdGaussian { get; set; }
+        //public long IdGaussian { get; set; }
+        public TrapezoidalMFuncParams TrapezParam { get; set; }
 
-        public Color СolorLine { get; set; }
+        public Color ColorLine { get; set; }
+
+        public void Set(FuzzyVariable fv)
+        {
+            ID = fv.ID;
+            IdSymptom = fv.IdSymptom;
+            Name = fv.Name;
+            Type = fv.Type;
+            Bound = fv.Bound;
+            GaussParam = fv.GaussParam;
+            TrianglParam = fv.TrianglParam;
+            TrapezParam = fv.TrapezParam;
+            ColorLine = fv.ColorLine;
+        }
 
         public FuzzyVariable(long id, long id_symp, string name, Color color)
         {
             ID = id;
             IdSymptom = id_symp;
             Name = name;
-            СolorLine = color;
+            ColorLine = color;
 
-            IdGaussian = IdTriangulare = IdTrapezoidal = -1;
+            GaussParam = new GaussMFuncParams(0, 0);
+            TrianglParam = new TriangulareMFuncParams(0, 0, 0);
+            TrapezParam = new TrapezoidalMFuncParams(0, 0, 0, 0);
+            GaussParam.ID = TrianglParam.ID = TrapezParam.ID = -1;
         }
 
         public string LastTrouble { get; set; }

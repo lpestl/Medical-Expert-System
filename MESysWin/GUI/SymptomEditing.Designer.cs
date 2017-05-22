@@ -60,7 +60,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(566, 326);
+            this.buttonOk.Location = new System.Drawing.Point(666, 326);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 0;
@@ -72,7 +72,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(647, 326);
+            this.buttonCancel.Location = new System.Drawing.Point(747, 326);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 1;
@@ -95,14 +95,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNameLV.Location = new System.Drawing.Point(289, 10);
             this.textBoxNameLV.Name = "textBoxNameLV";
-            this.textBoxNameLV.Size = new System.Drawing.Size(433, 20);
+            this.textBoxNameLV.Size = new System.Drawing.Size(533, 20);
             this.textBoxNameLV.TabIndex = 3;
             // 
             // panelGraph
             // 
-            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.panelGraph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelGraph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelGraph.Controls.Add(this.textBoxTop);
             this.panelGraph.Controls.Add(this.textBoxBottom);
             this.panelGraph.Location = new System.Drawing.Point(16, 36);
@@ -146,8 +147,7 @@
             // 
             // groupBoxTermM
             // 
-            this.groupBoxTermM.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBoxTermM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxTermM.Controls.Add(this.buttonEdit);
             this.groupBoxTermM.Controls.Add(this.buttonRemove);
@@ -155,7 +155,7 @@
             this.groupBoxTermM.Controls.Add(this.dataGridViewFuzzyVar);
             this.groupBoxTermM.Location = new System.Drawing.Point(384, 37);
             this.groupBoxTermM.Name = "groupBoxTermM";
-            this.groupBoxTermM.Size = new System.Drawing.Size(338, 279);
+            this.groupBoxTermM.Size = new System.Drawing.Size(438, 279);
             this.groupBoxTermM.TabIndex = 6;
             this.groupBoxTermM.TabStop = false;
             this.groupBoxTermM.Text = "Базовое терм-множество (список нечетких переменных)";
@@ -166,7 +166,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEdit.Location = new System.Drawing.Point(65, 249);
             this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(267, 23);
+            this.buttonEdit.Size = new System.Drawing.Size(367, 23);
             this.buttonEdit.TabIndex = 9;
             this.buttonEdit.Text = "Изменить";
             this.buttonEdit.UseVisualStyleBackColor = true;
@@ -226,7 +226,7 @@
             this.dataGridViewFuzzyVar.Location = new System.Drawing.Point(7, 30);
             this.dataGridViewFuzzyVar.Name = "dataGridViewFuzzyVar";
             this.dataGridViewFuzzyVar.ReadOnly = true;
-            this.dataGridViewFuzzyVar.Size = new System.Drawing.Size(325, 213);
+            this.dataGridViewFuzzyVar.Size = new System.Drawing.Size(425, 213);
             this.dataGridViewFuzzyVar.TabIndex = 0;
             // 
             // id_fuzzy_var
@@ -235,10 +235,12 @@
             this.id_fuzzy_var.HeaderText = "ID";
             this.id_fuzzy_var.Name = "id_fuzzy_var";
             this.id_fuzzy_var.ReadOnly = true;
+            this.id_fuzzy_var.Visible = false;
             this.id_fuzzy_var.Width = 25;
             // 
             // NameFuzzyVar
             // 
+            this.NameFuzzyVar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NameFuzzyVar.HeaderText = "Имя";
             this.NameFuzzyVar.Name = "NameFuzzyVar";
             this.NameFuzzyVar.ReadOnly = true;
@@ -248,6 +250,7 @@
             this.idTypeMfColumn.HeaderText = "ID_MF";
             this.idTypeMfColumn.Name = "idTypeMfColumn";
             this.idTypeMfColumn.ReadOnly = true;
+            this.idTypeMfColumn.Visible = false;
             this.idTypeMfColumn.Width = 30;
             // 
             // typeFuzzyVar
@@ -255,12 +258,14 @@
             this.typeFuzzyVar.HeaderText = "Тип функции";
             this.typeFuzzyVar.Name = "typeFuzzyVar";
             this.typeFuzzyVar.ReadOnly = true;
+            this.typeFuzzyVar.Width = 115;
             // 
             // idBoundTypeColumn
             // 
             this.idBoundTypeColumn.HeaderText = "ID_bound";
             this.idBoundTypeColumn.Name = "idBoundTypeColumn";
             this.idBoundTypeColumn.ReadOnly = true;
+            this.idBoundTypeColumn.Visible = false;
             this.idBoundTypeColumn.Width = 30;
             // 
             // typeBound
@@ -268,6 +273,7 @@
             this.typeBound.HeaderText = "Тип границы истинности";
             this.typeBound.Name = "typeBound";
             this.typeBound.ReadOnly = true;
+            this.typeBound.Width = 115;
             // 
             // ColorFuzzyVar
             // 
@@ -276,13 +282,14 @@
             this.ColorFuzzyVar.HeaderText = "Цвет";
             this.ColorFuzzyVar.Name = "ColorFuzzyVar";
             this.ColorFuzzyVar.ReadOnly = true;
-            this.ColorFuzzyVar.Width = 50;
+            this.ColorFuzzyVar.Width = 40;
             // 
             // ColumnIdTriangle
             // 
             this.ColumnIdTriangle.HeaderText = "TriangleId";
             this.ColumnIdTriangle.Name = "ColumnIdTriangle";
             this.ColumnIdTriangle.ReadOnly = true;
+            this.ColumnIdTriangle.Visible = false;
             this.ColumnIdTriangle.Width = 25;
             // 
             // ColumnIdTrapez
@@ -290,6 +297,7 @@
             this.ColumnIdTrapez.HeaderText = "TrapezId";
             this.ColumnIdTrapez.Name = "ColumnIdTrapez";
             this.ColumnIdTrapez.ReadOnly = true;
+            this.ColumnIdTrapez.Visible = false;
             this.ColumnIdTrapez.Width = 25;
             // 
             // ColumnIdGauss
@@ -297,13 +305,14 @@
             this.ColumnIdGauss.HeaderText = "GaussId";
             this.ColumnIdGauss.Name = "ColumnIdGauss";
             this.ColumnIdGauss.ReadOnly = true;
+            this.ColumnIdGauss.Visible = false;
             this.ColumnIdGauss.Width = 25;
             // 
             // SymptomEditing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 361);
+            this.ClientSize = new System.Drawing.Size(834, 361);
             this.Controls.Add(this.groupBoxTermM);
             this.Controls.Add(this.buttonRedraw);
             this.Controls.Add(this.panelGraph);
@@ -311,7 +320,7 @@
             this.Controls.Add(this.labelLingVar);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
-            this.MinimumSize = new System.Drawing.Size(500, 230);
+            this.MinimumSize = new System.Drawing.Size(600, 230);
             this.Name = "SymptomEditing";
             this.Text = "Редактирование симптома";
             this.Resize += new System.EventHandler(this.SymptomEditing_Resize);
