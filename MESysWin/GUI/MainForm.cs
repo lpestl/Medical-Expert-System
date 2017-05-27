@@ -66,5 +66,20 @@ namespace MESysWin
             var quantForm = new QuantForm();
             quantForm.Show();
         }
+
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Log.Print("Click Menu -> Administrator -> users", "mainForm", Log.type.INFO);
+            var UsersForm = new GUI.UserControl();
+            UsersForm.Show();
+        }
+
+        private void symptomEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Log.Print("Click Menu -> Expert -> Symptoms", "mainForm", Log.type.INFO);
+            var symptomsForm = new LingVar();
+            symptomsForm.Show();
+        }
     }
 }

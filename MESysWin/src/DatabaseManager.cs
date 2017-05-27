@@ -176,6 +176,47 @@ namespace MESysWin.src
                     "id_quantifier INTEGER PRIMARY KEY AUTOINCREMENT",
                     "name TEXT",
                     "rule TEXT");
+
+                // Создадим таблицу Diagnosis, если она не создана
+                CreateTable(conn, "diagnosis",
+                    "id_diagnosis INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "name TEXT",
+                    "description TEXT",
+                    "symptoms TEXT",
+                    "treatment TEXT");
+
+                // Создадим таблицу Antecedent, если она не создана
+                CreateTable(conn, "antecedent",
+                    "id_antecedent INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "id_ling_var INTEGER",
+                    "id_var INTEGER",
+                    "id_quantifier INTEGER",
+                    "id_next_ant INTEGER",
+                    "FOREIGN KEY (id_ling_var) REFERENCES linguistic_variable(id_ling_var)",
+                    "FOREIGN KEY (id_var) REFERENCES fuzzy_variable(id_var)",
+                    "FOREIGN KEY (id_quantifier) REFERENCES quantifier(id_quantifier)");
+
+                // Создадим таблицу knowledge_base, если она не создана
+                CreateTable(conn, "knowledge_base",
+                    "id_rule INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "id_diagnosis INTEGER",
+                    "id_antecedent INTEGER",
+                    "FOREIGN KEY (id_diagnosis) REFERENCES diagnosis(id_diagnosis)",
+                    "FOREIGN KEY (id_antecedent) REFERENCES antecedent(id_antecedent)");
+
+                // Создадим таблицу user_grop, если она не создана
+                CreateTable(conn, "user_group",
+                    "id_group INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "name TEXT",
+                    "description TEXT");
+
+                // Создаем таблицу login, если она не создана
+                CreateTable(conn, "login",
+                    "id_login INTEGER PRIMARY KEY AUTOINCREMENT",
+                    "id_group INTEGER",
+                    "login TEXT",
+                    "password TEXT",
+                    "FOREIGN KEY(id_group) REFERENCES user_group(id_group)");
             }
         }
 
@@ -1138,6 +1179,142 @@ namespace MESysWin.src
             CloseConnection();
 
             return resList;
+        }
+
+        public List<GroupUsers> GetGroupUsers()
+        {
+            List<GroupUsers> list = new List<GroupUsers>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_group, name, description FROM user_group";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new GroupUsers();
+                    curr.ID = r.GetInt64(0);
+                    curr.Name = r.GetString(1);
+                    curr.Description = r.GetString(2);
+
+                    list.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+            }
+
+            CloseConnection();
+
+            return list;
+        }
+
+        public List<User> GetUserList()
+        {
+            List<User> list = new List<User>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_login, id_group, login, password FROM login";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new User();
+                    curr.ID = r.GetInt64(0);
+                    curr.GroupId = r.GetInt64(1);
+                    curr.Login = r.GetString(2);
+                    try { curr.Password = r.GetString(3); } catch { curr.Password = String.Empty; }
+                    
+
+                    list.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+            }
+
+            CloseConnection();
+
+            return list;
+        }
+
+        public long InsertUser(User usr)
+        {
+            long inserted_id = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO login "
+                + "(id_group, login, password) "
+                + "VALUES (@id_group, @login, @password)";
+            
+            cmd.Parameters.AddWithValue("@id_group", usr.GroupId);
+            cmd.Parameters.AddWithValue("@login", usr.Login);
+            cmd.Parameters.AddWithValue("@password", usr.Password);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                usr.ID = inserted_id = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return inserted_id;
+        }
+
+        public void UpdateUser(User usr)
+        {
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "UPDATE login "
+                + "SET id_group = @id_group, login = @login, password = @password "
+                + "WHERE id_login = @id_login";
+
+            cmd.Parameters.AddWithValue("@id_login", usr.ID);
+            cmd.Parameters.AddWithValue("@id_group", usr.GroupId);
+            cmd.Parameters.AddWithValue("@login", usr.Login);
+            cmd.Parameters.AddWithValue("@password", usr.Password);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
         }
     }
 }
