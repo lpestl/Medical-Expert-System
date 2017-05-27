@@ -1,0 +1,5 @@
+id_quantifier,name,rule
+0,  ,MF(x)
+1,не,1 - MF(x)
+2,очень,MF(x)^2
+3,более-менее,sqrt(MF(x))
