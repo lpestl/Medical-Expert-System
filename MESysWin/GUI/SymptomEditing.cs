@@ -126,7 +126,7 @@ namespace MESysWin.GUI
             bufferedGraphics.Graphics.Clear(panelGraph.BackColor);
             
             GraphicOnFrom.PaintGrid(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height);
-            if (!isInit) { bufferedGraphics.Render(); return; }
+            if ((!isInit) || (FuzzyList == null)) { bufferedGraphics.Render(); return; }
             GraphicOnFrom.DrawBottomScale(bufferedGraphics.Graphics, panelGraph.Width, panelGraph.Height, double.Parse(textBoxBottom.Text), double.Parse(textBoxTop.Text));
 
             int i = 0;
@@ -255,9 +255,14 @@ namespace MESysWin.GUI
                 var i = dataGridViewFuzzyVar.SelectedCells[0].RowIndex;
                 var id_in_db = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[0].Value);
 
-                if (MessageBox.Show("Вы действительно хотите удалить запись о нечеткой переменной из базы знаний, из базы данных и из приложения?\n",
+                if (MessageBox.Show("Вы действительно хотите удалить запись о нечеткой переменной из Базы Знаний, " +
+                    "из базы данных и из приложения?\r\n\r\n" +
+                    "ВНИМАНИЕ!!! Удаление приведет к тому, что будет так же удален АНТЕЦЕДЕНТ из правила в Базе Знаний," +
+                    " а значит диагностика в РЕЖИМЕ КОНСУЛЬТАЦИИ будет не верна! Медицинская информационная система " +
+                    "будет диагностировать не верно то заболевание, в правиле которого учавствовал данный АНТЕЦЕДЕНТ!!!\r\n\r\n" +
+                    "Вы уверены, что хотите удалить эту переменную?",
                         String.Format("Удаление \"{0}\"", Convert.ToString(dataGridViewFuzzyVar.Rows[i].Cells[1].Value)),
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     //var buttonColor = dataGridViewFuzzyVar.Rows[i].Cells[3] as DataGridViewButtonCell;
 
@@ -265,28 +270,40 @@ namespace MESysWin.GUI
                         Convert.ToString(dataGridViewFuzzyVar.Rows[i].Cells[1].Value),
                         buttonColor.Style.BackColor);*/
 
-                    long j;
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[7].Value);
-                    if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
-                        "triangular_mf", "id_triangl_mf");
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[8].Value);
-                    if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
-                        "trapezoidal_mf", "id_trapez_mf");
-                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);
-                    if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
-                        "gauss_mf", "id_gauss_mf");
+                    long j,y,z;
+                    j = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[7].Value);                    
+                    y = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[8].Value);
+                    z = Convert.ToInt64(dataGridViewFuzzyVar.Rows[i].Cells[9].Value);
 
-                    DatabaseManager.Instance.DeleteFromTable(id_in_db, "fuzzy_variable", "id_var");
-                    dataGridViewFuzzyVar.Rows.RemoveAt(i);
+                    if (DatabaseManager.Instance.DeleteFromTable(id_in_db, "fuzzy_variable", "id_var"))
+                    {
+                        if (j != -1) DatabaseManager.Instance.DeleteFromTable(j,
+                            "triangular_mf", "id_triangl_mf");
 
-                    FuzzyList.Remove(FuzzyList.Find(x => x.ID == id_in_db));
+                        if (y != -1) DatabaseManager.Instance.DeleteFromTable(y,
+                            "trapezoidal_mf", "id_trapez_mf");
+
+                        if (z != -1) DatabaseManager.Instance.DeleteFromTable(z,
+                            "gauss_mf", "id_gauss_mf");
+
+                        dataGridViewFuzzyVar.Rows.RemoveAt(i);
+
+                        FuzzyList.Remove(FuzzyList.Find(x => x.ID == id_in_db));
+                    } else
+                    {
+                        MessageBox.Show("Вы не можете удалить выбранную запись, по той причине, что она используется в правиле Базы Знаний." +
+                            " Её удаление приведет к неправильной работе приложения." +
+                            " Чтобы удалить эту переменную, удалите или измените сначала правило из базы знаний в котором она используется.",
+                            "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-
             }
             else
             {
                 MessageBox.Show("Ничего не удалено! Не выделено ни одной строки с данными.", "Удаления не произошло", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            DrawGraphs();
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -294,6 +311,8 @@ namespace MESysWin.GUI
             var FuzzyForm = new FuzzyVarForm(prototypeSymtom);
             FuzzyForm.Owner = this;
             FuzzyForm.ShowDialog();
+
+            DrawGraphs();
         }
         
         private void textBoxBottom_TextChanged(object sender, EventArgs e)
@@ -353,6 +372,8 @@ namespace MESysWin.GUI
             {
                 MessageBox.Show("Ничего не выделено для редактирования!", "Объект не выделен", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            DrawGraphs();
         }
     }
 }

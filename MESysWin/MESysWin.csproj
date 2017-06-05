@@ -60,6 +60,8 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.105.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +74,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\AboutBoxForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\AboutBoxForm.Designer.cs">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\BoundaryEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,17 +92,41 @@
     <Compile Include="GUI\BoundaryTypeForm.Designer.cs">
       <DependentUpon>BoundaryTypeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\DiagnosisEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\DiagnosisEditor.Designer.cs">
+      <DependentUpon>DiagnosisEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DiagnosisForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\DiagnosisForm.Designer.cs">
+      <DependentUpon>DiagnosisForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FuzzyVarForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\FuzzyVarForm.Designer.cs">
       <DependentUpon>FuzzyVarForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\KnowledgeBased.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\KnowledgeBased.Designer.cs">
+      <DependentUpon>KnowledgeBased.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\LingVar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\LingVar.Designer.cs">
       <DependentUpon>LingVar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\MainForm.cs">
       <SubType>Form</SubType>
@@ -140,29 +172,47 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Antecedent.cs" />
     <Compile Include="src\BoundaryType.cs" />
     <Compile Include="src\DatabaseManager.cs" />
+    <Compile Include="src\Diagnosis.cs" />
     <Compile Include="src\FuzzyVariable.cs" />
     <Compile Include="src\GraphicOnFrom.cs" />
     <Compile Include="src\GroupUsers.cs" />
     <Compile Include="src\Log.cs" />
     <Compile Include="src\MFuncParams.cs" />
     <Compile Include="src\Quantifier.cs" />
+    <Compile Include="src\Rule.cs" />
     <Compile Include="src\Settings.cs" />
     <Compile Include="src\Symptom.cs" />
     <Compile Include="src\TypeMFunc.cs" />
     <Compile Include="src\User.cs" />
+    <EmbeddedResource Include="GUI\AboutBoxForm.resx">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\BoundaryEdit.resx">
       <DependentUpon>BoundaryEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\BoundaryTypeForm.resx">
       <DependentUpon>BoundaryTypeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DiagnosisEditor.resx">
+      <DependentUpon>DiagnosisEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DiagnosisForm.resx">
+      <DependentUpon>DiagnosisForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FuzzyVarForm.resx">
       <DependentUpon>FuzzyVarForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\KnowledgeBased.resx">
+      <DependentUpon>KnowledgeBased.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\LingVar.resx">
       <DependentUpon>LingVar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -195,6 +245,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagramApp.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -214,6 +265,7 @@
     <Content Include="res\AvaExpert.png" />
     <Content Include="res\AvaGuest.png" />
     <Content Include="res\AvaUser.png" />
+    <Content Include="res\bgAbout.jpg" />
     <Content Include="res\GaussMF.png" />
     <Content Include="res\TglMF.png" />
     <Content Include="res\TpzMF.png" />

@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="MESysWin.src.BoundaryType">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAkgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\BoundaryType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.DatabaseManager">
+    <Position X="2.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ACGAggEBAQDCAAAEBQAABREAAYVAEBggQgCwAAABAkI=</HashCode>
+      <FileName>src\DatabaseManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.Diagnosis">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAggAAAAABAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Diagnosis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.FuzzyVariable">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAUAEhEAAAAAAAEQAAAAAAAAAAQQAAAAAAgA=</HashCode>
+      <FileName>src\FuzzyVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.GraphicOnFrom">
+    <Position X="5.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAMAAAAABACAAQAAgAIAAAAACAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>src\GraphicOnFrom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.GroupUsers">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\GroupUsers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.MFunc">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>src\MFuncParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.GaussMFuncParams">
+    <Position X="5.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAABAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>src\MFuncParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.TriangulareMFuncParams">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAoAEAAAA=</HashCode>
+      <FileName>src\MFuncParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.TrapezoidalMFuncParams">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAApAEAAAA=</HashCode>
+      <FileName>src\MFuncParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.Quantifier">
+    <Position X="7.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAgIAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Quantifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.Symptom">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEAEgAAAAQAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Symptom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.TypeMFunc">
+    <Position X="9" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAkgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\TypeMFunc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.src.User">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAEAEgAAAAAAAAAAAAAAAAAACAAAQAAAAAAA=</HashCode>
+      <FileName>src\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.MainForm" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUSCFIAAACAQoAAQICKDCwAmAgsIIQAAshFAFwwMIAA=</HashCode>
+      <FileName>GUI\MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.QuantForm" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEAACCASAAIgACAALABggCAAgggAgggAAAAAgBASA=</HashCode>
+      <FileName>GUI\QuantForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.SymptomEditing" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACECBAAkCIEArgBwACBhgAAAgoETACBAgAUEE=</HashCode>
+      <FileName>GUI\SymptomEditing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.TypeEdit" Collapsed="true">
+    <Position X="12.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQAAASAAAAAMAACABAACAAAAAAAAARAAAAABACA=</HashCode>
+      <FileName>GUI\TypeEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.TypeMFform" Collapsed="true">
+    <Position X="12.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAEAAAECBABgAAAAiAAgACAAAAgAAAgAAAAgABAAA=</HashCode>
+      <FileName>GUI\TypeMFform.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.UserControl" Collapsed="true">
+    <Position X="12.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AERAgEAAHCBAIgAIAAiABgACEgAAAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>GUI\UserControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.UserEdit" Collapsed="true">
+    <Position X="12.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAARAAAAACAIoAAcAQCABIQCBAAAgAAEAwAAABAAAAA=</HashCode>
+      <FileName>GUI\UserEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.AboutBoxForm" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kIAAAAgAACAgCAUAAACAAAADAAAAEIAAAQAAAAAAAAA=</HashCode>
+      <FileName>GUI\AboutBoxForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.BoundaryEdit" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAASAAAAAMAACABAACAAAAAAEAARAAAAABACA=</HashCode>
+      <FileName>GUI\BoundaryEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.BoundaryTypeForm" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIBAAAAAECJAAgAAAAiAIgACAAAAgAAAAAAAAAABAAA=</HashCode>
+      <FileName>GUI\BoundaryTypeForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.DiagnosisEditor" Collapsed="true">
+    <Position X="14.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAACCAAIQAIAACABEACAIAAAQAQAQAAAAABAiA=</HashCode>
+      <FileName>GUI\DiagnosisEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.DiagnosisForm" Collapsed="true">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEAAAAECBAAAAgAAiAAgACAAAAAAAAAQAAAACQAIA=</HashCode>
+      <FileName>GUI\DiagnosisForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.FuzzyVarForm" Collapsed="true">
+    <Position X="14.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UACAAUICAGAAQEQPQELCDUACiAQAAdkiEQFuBAhgECA=</HashCode>
+      <FileName>GUI\FuzzyVarForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.KnowledgeBased" Collapsed="true">
+    <Position X="14.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\KnowledgeBased.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.LingVar" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADAAECAECBAAAAAAAiAAgACAAgBAAAAAAAAAAABAoA=</HashCode>
+      <FileName>GUI\LingVar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MESysWin.GUI.LoginForm" Collapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAABACAAAACIAACABAQKAgAAAgAAAQAAAAAAAEA=</HashCode>
+      <FileName>GUI\LoginForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="MESysWin.src.BoundaryTypeEnum" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
+      <FileName>src\BoundaryType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MESysWin.src.QuantifierEnum">
+    <Position X="7.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAIAAAAQAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Quantifier.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MESysWin.src.TypeMFuncEnum">
+    <Position X="9" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAQAAAI=</HashCode>
+      <FileName>src\TypeMFunc.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

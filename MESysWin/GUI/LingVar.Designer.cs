@@ -30,21 +30,22 @@
         {
             this.groupBoxSymptoms = new System.Windows.Forms.GroupBox();
             this.dataGridViewSymptoms = new System.Windows.Forms.DataGridView();
-            this.buttonCorrect = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
-            this.buttonAdd = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonCorrect = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.groupBoxSymptoms.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSymptoms)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxSymptoms
             // 
-            this.groupBoxSymptoms.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxSymptoms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxSymptoms.Controls.Add(this.dataGridViewSymptoms);
             this.groupBoxSymptoms.Controls.Add(this.buttonCorrect);
             this.groupBoxSymptoms.Controls.Add(this.buttonRemove);
@@ -75,6 +76,33 @@
             this.dataGridViewSymptoms.Size = new System.Drawing.Size(408, 277);
             this.dataGridViewSymptoms.TabIndex = 4;
             this.dataGridViewSymptoms.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSymptoms_CellContentClick);
+            // 
+            // id
+            // 
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NameColumn.HeaderText = "Имя симптома";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            // 
+            // ColumnBottom
+            // 
+            this.ColumnBottom.HeaderText = "Bottom";
+            this.ColumnBottom.Name = "ColumnBottom";
+            this.ColumnBottom.ReadOnly = true;
+            this.ColumnBottom.Visible = false;
+            // 
+            // ColumnTop
+            // 
+            this.ColumnTop.HeaderText = "Top";
+            this.ColumnTop.Name = "ColumnTop";
+            this.ColumnTop.ReadOnly = true;
+            this.ColumnTop.Visible = false;
             // 
             // buttonCorrect
             // 
@@ -112,38 +140,11 @@
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
-            // id
-            // 
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NameColumn.HeaderText = "Имя симптома";
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            // 
-            // ColumnBottom
-            // 
-            this.ColumnBottom.HeaderText = "Bottom";
-            this.ColumnBottom.Name = "ColumnBottom";
-            this.ColumnBottom.ReadOnly = true;
-            this.ColumnBottom.Visible = false;
-            // 
-            // ColumnTop
-            // 
-            this.ColumnTop.HeaderText = "Top";
-            this.ColumnTop.Name = "ColumnTop";
-            this.ColumnTop.ReadOnly = true;
-            this.ColumnTop.Visible = false;
-            // 
             // LingVar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 361);
+            this.ClientSize = new System.Drawing.Size(442, 361);
             this.Controls.Add(this.groupBoxSymptoms);
             this.Name = "LingVar";
             this.Text = "Симптомы";

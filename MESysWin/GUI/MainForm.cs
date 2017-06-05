@@ -14,20 +14,125 @@ namespace MESysWin
 {
     public partial class MainForm : Form
     {
+        public List<src.Rule> Rules { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
 
             DatabaseManager.Instance.DatabaseConnect();
 
+            CheckUserDialog();
+
+            labelOp.Text = "Область применения:\n\n"
+                + "   Система предназначена  только для  первичного определения  характера\n"
+                + "   заболевания, когда    еще нет   возможности проконсультироваться   со\n"
+                + "   специалистом.При первой  возможности следует  обратится к  врачу,  вне\n"
+                + "   зависимости от поставленного системой диагноза.";
+
+            labelWarning.Text = "ВHИМАHИЕ!\n\n"
+                + "Эта система не предназначена для замены вам консультации у врача!\n"
+                + "Система, для определения заболевания, опирается на весьма ограниченное\n"
+                + "число симптомов, что сказывается на качестве прогнозирования. Система знает\n"
+                + "более ста различных заболеваний, что покрывает наиболее часто встречающееся,\n"
+                + "но не идет ни в какое сравнение со знаниями специалиста!\n"
+                + "В некоторых случаях система может поставить неверный диагноз -\n"
+                + "консультация у специалиста обязательна!";
+
+            Rules = new List<src.Rule>();
+            UpdateRules();
+
             Log.Print("Open MainForm", "mainForm", Log.type.INFO);
         }
 
-        /*private void button1_Click(object sender, EventArgs e)
+        public void UpdateRules()
         {
-            DatabaseManager.Instance.DatabaseConnect();
-        }*/
-        
+            Rules.Clear();
+            dataGridViewBase.Rows.Clear();
+
+            Rules = DatabaseManager.Instance.GetRuleList();
+
+            foreach (var rule in Rules)
+            {
+                string[] row = new string[] { rule.ID.ToString(), rule.Preview, rule.Conclusion.ID.ToString() };
+                dataGridViewBase.Rows.Add(row);
+            }
+        }
+
+        public void CheckUserDialog()
+        {
+            userToolStripMenuItem.Text = Settings.Instance.currenUser.Login;
+
+            switch (Settings.Instance.currenUser.GroupId)
+            {
+                //case 1:
+                //    break;
+                case 2:
+                    // Если врач (мед.персонал)
+                    expertToolStripMenuItem.Visible = true;
+                    kbToolStripMenuItem.Visible = false;
+                    admToolStripMenuItem.Visible = false;
+                    medBookToolStripMenuItem.Enabled = true;
+                    settingUserToolStripMenuItem.Enabled = true;
+
+                    buttonAddRule.Enabled = false;
+                    buttonRemoveRule.Enabled = false;
+                    buttonEditRule.Enabled = false;
+
+                    userToolStripMenuItem.BackColor = Color.Yellow;
+                    modeToolStripMenuItem.BackColor = Color.Yellow;
+                    modeToolStripMenuItem.Text = "Режим консультации";
+                    break;
+                case 3:
+                    // Если эксперт или инженер по знаниям
+                    expertToolStripMenuItem.Visible = true;
+                    kbToolStripMenuItem.Visible = true;
+                    admToolStripMenuItem.Visible = false;
+                    medBookToolStripMenuItem.Enabled = false;
+                    settingUserToolStripMenuItem.Enabled = true;
+
+                    buttonAddRule.Enabled = true;
+                    buttonRemoveRule.Enabled = true;
+                    buttonEditRule.Enabled = true;
+
+                    userToolStripMenuItem.BackColor = Color.Orange;
+                    modeToolStripMenuItem.BackColor = Color.Orange;
+                    modeToolStripMenuItem.Text = "Режим ввода знаний";
+                    break;
+                case 4:
+                    expertToolStripMenuItem.Visible = true;
+                    kbToolStripMenuItem.Visible = true;
+                    admToolStripMenuItem.Visible = true;
+                    medBookToolStripMenuItem.Enabled = true;
+                    settingUserToolStripMenuItem.Enabled = true;
+
+                    buttonAddRule.Enabled = true;
+                    buttonRemoveRule.Enabled = true;
+                    buttonEditRule.Enabled = true;
+
+                    userToolStripMenuItem.BackColor = Color.Red;
+                    modeToolStripMenuItem.BackColor = Color.Red;
+                    modeToolStripMenuItem.Text = "Режим полного доступа";
+                    break;
+                default:
+                    // Если гость (по умолчанию)
+                    expertToolStripMenuItem.Visible = false;
+                    kbToolStripMenuItem.Visible = false;
+                    admToolStripMenuItem.Visible = false;
+                    medBookToolStripMenuItem.Enabled = false;
+                    settingUserToolStripMenuItem.Enabled = false;
+
+                    buttonAddRule.Enabled = false;
+                    buttonRemoveRule.Enabled = false;
+                    buttonEditRule.Enabled = false;
+
+                    userToolStripMenuItem.BackColor = Color.Lime;
+                    modeToolStripMenuItem.BackColor = Color.Lime;
+                    modeToolStripMenuItem.Text = "Режим консультации";
+                    break;
+            }
+        }
+
         private void timerForLog_Tick(object sender, EventArgs e)
         {
             toolStripStatusLabelInfo.Text = Log.lastLine;
@@ -71,7 +176,8 @@ namespace MESysWin
         {
             Log.Print("Click Menu -> Administrator -> users", "mainForm", Log.type.INFO);
             var UsersForm = new GUI.UserControl();
-            UsersForm.Show();
+            UsersForm.ShowDialog();
+            CheckUserDialog();
         }
 
         private void symptomEditorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -80,6 +186,48 @@ namespace MESysWin
             Log.Print("Click Menu -> Expert -> Symptoms", "mainForm", Log.type.INFO);
             var symptomsForm = new LingVar();
             symptomsForm.Show();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var about = new AboutBoxForm();
+            about.ShowDialog();
+        }
+
+        private void userToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var login = new LoginForm();
+            login.ShowDialog();
+            CheckUserDialog();
+        }
+
+        private void settingUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formAdd = new UserEdit(Settings.Instance.currenUser);
+            formAdd.Owner = this;
+            formAdd.comboBoxGroup.Enabled = false;
+            if (formAdd.ShowDialog() == DialogResult.OK)
+            {
+                //MessageBox.Show("OK");
+            }
+            CheckUserDialog();
+        }
+
+        private void diagnosisListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var diaForm = new DiagnosisForm();
+            diaForm.Show();
+        }
+
+        private void buttonAddRule_Click(object sender, EventArgs e)
+        {
+            var ruleEditor = new KnowledgeBased(new src.Rule());
+
+            if (ruleEditor.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("База знаний обновилась!", "Сообщение об изменении", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UpdateRules();
+            }
         }
     }
 }

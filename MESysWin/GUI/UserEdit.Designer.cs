@@ -223,7 +223,7 @@
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.CheckBox checkBoxShowNew;
         private System.Windows.Forms.CheckBox checkBoxShowOld;
-        private System.Windows.Forms.ComboBox comboBoxGroup;
+        public System.Windows.Forms.ComboBox comboBoxGroup;
         private System.Windows.Forms.TextBox textBoxNewPassword;
         private System.Windows.Forms.TextBox textBoxOldPassword;
         private System.Windows.Forms.TextBox textBoxLogin;

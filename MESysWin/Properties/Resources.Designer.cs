@@ -103,6 +103,16 @@ namespace MESysWin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bgAbout {
+            get {
+                object obj = ResourceManager.GetObject("bgAbout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GaussMF {
             get {
                 object obj = ResourceManager.GetObject("GaussMF", resourceCulture);

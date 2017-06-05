@@ -44,12 +44,27 @@ namespace MESysWin.GUI
                 var i = dataGridViewSymptoms.SelectedRows[0].Index;
                 var id_in_db = Convert.ToInt32(dataGridViewSymptoms.Rows[i].Cells[0].Value);
 
-                if (MessageBox.Show("Вы действительно хотите удалить запись о СИМПТОМЕ как о лингвистической переменной из базы знаний, из базы данных и из приложения?\n",
+                if (MessageBox.Show("Вы действительно хотите удалить запись о СИМПТОМЕ как о лингвистической переменной из базы знаний," +
+                    " из базы данных и из приложения?\r\n\r\n" +
+                    "ВНИМАНИЕ!!! Удаление приведет к тому, что будет так же удален АНТЕЦЕДЕНТ из правила в Базе Знаний," +
+                    " а значит диагностика в РЕЖИМЕ КОНСУЛЬТАЦИИ будет не верна! Медицинская информационная система " +
+                    "будет диагностировать не верно то заболевание, в правиле которого учавствовал данный АНТЕЦЕДЕНТ!!!\r\n\r\n" +
+                    "Вы уверены, что хотите удалить эту переменную?",
                         String.Format("Удаление {0}", Convert.ToString(dataGridViewSymptoms.Rows[i].Cells[1].Value)),
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
-                    DatabaseManager.Instance.DeleteFromTable(id_in_db, "linguistic_variable", "id_ling_var");
-                    dataGridViewSymptoms.Rows.RemoveAt(i);
+                    if (DatabaseManager.Instance.DeleteFromTable(id_in_db, "linguistic_variable", "id_ling_var"))
+                    {
+                        dataGridViewSymptoms.Rows.RemoveAt(i);
+                    } else
+                    {
+                        MessageBox.Show("Вы не можете удалить выбранную запись, по той причине, что она используется в правиле Базы Знаний " +
+                            "и содержит в себе дочерние элементы (нечеткие переменные)." +
+                            " Её удаление приведет к неправильной работе приложения." +
+                            " Чтобы удалить эту переменную, удалите или измените сначала правило из базы знаний, в котором она используется," +
+                            " а так же все нечеткие переменные, которые к ней относятся.",
+                            "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
 
             }

@@ -108,6 +108,21 @@ namespace MESysWin.src
             // Если подключение есть
             if (conn.State == ConnectionState.Open)
             {
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                string sql_command = "PRAGMA foreign_keys = ON;";
+                cmd.CommandText = sql_command;
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException ex)
+                {
+                    Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
                 // Создадим таблицу Linguistic_variable, если она не существует
                 CreateTable(conn, "linguistic_variable",
                     "id_ling_var INTEGER PRIMARY KEY AUTOINCREMENT",
@@ -164,7 +179,7 @@ namespace MESysWin.src
                     "r INTEGER",
                     "g INTEGER",
                     "b INTEGER",
-                    "FOREIGN KEY (id_ling_var) REFERENCES linguistic_variable(id_ling_var)",
+                    "FOREIGN KEY (id_ling_var) REFERENCES linguistic_variable(id_ling_var) ON DELETE CASCADE",
                     "FOREIGN KEY (id_mf_type) REFERENCES mf_type(id_mf_type)",
                     "FOREIGN KEY (id_bound) REFERENCES boundary_type(id_bound)",
                     "FOREIGN KEY (id_triangl_mf) REFERENCES triangular_mf(id_triangl_mf)",
@@ -188,21 +203,30 @@ namespace MESysWin.src
                 // Создадим таблицу Antecedent, если она не создана
                 CreateTable(conn, "antecedent",
                     "id_antecedent INTEGER PRIMARY KEY AUTOINCREMENT",
-                    "id_ling_var INTEGER",
-                    "id_var INTEGER",
-                    "id_quantifier INTEGER",
-                    "id_next_ant INTEGER",
-                    "FOREIGN KEY (id_ling_var) REFERENCES linguistic_variable(id_ling_var)",
-                    "FOREIGN KEY (id_var) REFERENCES fuzzy_variable(id_var)",
+                    "id_ling_var INTEGER NOT NULL",
+                    "id_var INTEGER NOT NULL",
+                    "id_quantifier INTEGER NOT NULL",
+                    "preview TEXT",
+                    //"id_next_ant INTEGER",
+                    "FOREIGN KEY (id_ling_var) REFERENCES linguistic_variable(id_ling_var) ON DELETE CASCADE",
+                    "FOREIGN KEY (id_var) REFERENCES fuzzy_variable(id_var) ON DELETE CASCADE",
                     "FOREIGN KEY (id_quantifier) REFERENCES quantifier(id_quantifier)");
+                //   FOREIGN KEY(trackartist) REFERENCES artist(artistid)
 
                 // Создадим таблицу knowledge_base, если она не создана
                 CreateTable(conn, "knowledge_base",
                     "id_rule INTEGER PRIMARY KEY AUTOINCREMENT",
-                    "id_diagnosis INTEGER",
-                    "id_antecedent INTEGER",
-                    "FOREIGN KEY (id_diagnosis) REFERENCES diagnosis(id_diagnosis)",
-                    "FOREIGN KEY (id_antecedent) REFERENCES antecedent(id_antecedent)");
+                    "id_diagnosis INTEGER NOT NULL",
+                    "preview TEXT",
+                    //"id_antecedent INTEGER",
+                    "FOREIGN KEY (id_diagnosis) REFERENCES diagnosis(id_diagnosis) ON DELETE CASCADE");
+                //"FOREIGN KEY (id_antecedent) REFERENCES antecedent(id_antecedent)");
+
+                CreateTable(conn, "antecedent_list",
+                    "id_rule INTEGER NOT NULL",
+                    "id_antecedent INTEGER NOT NULL",
+                    "FOREIGN KEY (id_rule) REFERENCES knowledge_base(id_rule) ON DELETE CASCADE",
+                    "FOREIGN KEY (id_antecedent) REFERENCES antecedent(id_antecedent) ON DELETE CASCADE");
 
                 // Создадим таблицу user_grop, если она не создана
                 CreateTable(conn, "user_group",
@@ -277,201 +301,27 @@ namespace MESysWin.src
             }
         }
         
-        // Вернуть список всех симптомов и их ID
-        public List<Symptom> GetSymptomList()
-        {
-            List<Symptom> res = new List<Symptom>();
-
-            OpenConnection();
-
-            SQLiteCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT id_ling_var, name, reasoning_bottom, reasoning_top "
-                + "FROM linguistic_variable";
-
-            try
-            {
-                SQLiteDataReader r = cmd.ExecuteReader();
-
-                while (r.Read())
-                {
-                    res.Add(new Symptom(r.GetInt64(0), r.GetString(1), r.GetDouble(2), r.GetDouble(3)));
-                }
-                r.Close();
-            }
-            catch (SQLiteException ex)
-            {
-                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
-                Console.WriteLine(ex.Message);
-            }
-
-            CloseConnection();
-
-            return res;
-        }
-
-        public List<TypeMFunc> GetTypesMf()
-        {
-            List<TypeMFunc> list = new List<TypeMFunc>();
-
-            OpenConnection();
-
-            SQLiteCommand cmd = conn.CreateCommand();
-
-            cmd.CommandText = "SELECT id_mf_type, name, description FROM mf_type";
-            
-            try
-            {
-                SQLiteDataReader r = cmd.ExecuteReader();
-                    
-                while (r.Read())
-                {
-                    list.Add(new TypeMFunc(r.GetInt64(0), r.GetString(1), r.GetString(2)));
-                }
-                r.Close();
-            }
-            catch (SQLiteException ex)
-            {
-                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
-                Console.WriteLine(ex.Message);
-            }
-
-            CloseConnection();
-
-            return list;
-        }
-
-        public List<FuzzyVariable> GetFuzzyVariables(long id_symptom)
-        {
-            List<FuzzyVariable> reslist = new List<FuzzyVariable>();
-            OpenConnection();
-
-            SQLiteCommand cmd = conn.CreateCommand();
-
-            cmd.CommandText = "SELECT "
-                    + "id_var, "
-                    + "id_ling_var, "
-                    + "name, "
-                    + "id_mf_type, "
-                    + "id_bound, "
-                    + "id_triangl_mf, "
-                    + "id_trapez_mf, "
-                    + "id_gauss_mf, "
-                    + "r, g, b "
-                + "FROM fuzzy_variable "
-                + "WHERE id_ling_var = @id_ling_var";
-
-            cmd.Parameters.AddWithValue("@id_ling_var", id_symptom);
-
-            try
-            {
-                SQLiteDataReader r = cmd.ExecuteReader();
-
-                while (r.Read())
-                {
-                    System.Drawing.Color clr = new System.Drawing.Color();
-                    try
-                    {
-                        clr = System.Drawing.Color.FromArgb(r.GetInt32(8), r.GetInt32(9), r.GetInt32(10));
-                    } catch
-                    {
-                        clr = System.Drawing.Color.Yellow;
-                    }
-
-                    FuzzyVariable fv;
-                    try
-                    {
-                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), r.GetString(2), clr);
-                    } catch
-                    {
-                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), "", clr);
-                    }
-
-                    switch(r.GetInt64(3))
-                    {
-                        case 0:
-                            fv.Type = TypeMFuncEnum.GAUSS;
-                            break;
-                        case 1:
-                            fv.Type = TypeMFuncEnum.TRIANGULARE;
-                            break;
-                        case 2:
-                            fv.Type = TypeMFuncEnum.TRAPEZOIDAL;
-                            break;
-                        default:
-                            fv.Type = TypeMFuncEnum.NOT_SETUP;
-                            break; 
-                    }
-
-                    switch (r.GetInt64(4))
-                    {
-                        case 0:
-                            fv.Bound = BoundaryTypeEnum.LEFT;
-                            break;
-                        case 1:
-                            fv.Bound = BoundaryTypeEnum.RIGHT;
-                            break;
-                        default:
-                            fv.Bound = BoundaryTypeEnum.MIDDLE;
-                            break;
-                    }
-
-                    fv.ColorLine = clr;
-
-                    try { fv.TrianglParam.ID = r.GetInt64(5); } catch { fv.TrianglParam.ID = -1; }
-                    try { fv.TrapezParam.ID = r.GetInt64(6); } catch { fv.TrapezParam.ID = -1; }
-                    try { fv.GaussParam.ID = r.GetInt64(7); } catch { fv.GaussParam.ID = -1; }
-
-                    reslist.Add(fv);
-                }
-                r.Close();
-            }
-            catch (SQLiteException ex)
-            {
-                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
-                Console.WriteLine(ex.Message);
-            }
-
-            CloseConnection();
-            return reslist;
-        }
-
-        public List<BoundaryType> GetBoundaryTypes()
-        {
-            var list = new List<BoundaryType>();
-
-            OpenConnection();
-
-            SQLiteCommand cmd = conn.CreateCommand();
-
-            cmd.CommandText = "SELECT id_bound, name, description FROM boundary_type";
-
-            try
-            {
-                SQLiteDataReader r = cmd.ExecuteReader();
-
-                while (r.Read())
-                {
-                    list.Add(new BoundaryType(r.GetInt64(0), r.GetString(1), r.GetString(2)));
-                }
-                r.Close();
-            }
-            catch (SQLiteException ex)
-            {
-                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
-                Console.WriteLine(ex.Message);
-            }
-
-            CloseConnection();
-
-            return list;
-        }
-        
-        public bool DeleteFromTable(long id, string tableName, string columnName)
+        public bool DeleteFromTable(long id, string tableName, string columnName, bool checkIdInOtherTables = true)
         {
             bool res = false;
             OpenConnection();
 
             SQLiteCommand cmd = conn.CreateCommand();
+
+            if (checkIdInOtherTables)
+            {
+                cmd.CommandText = "PRAGMA foreign_keys = ON;";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException ex)
+                {
+                    Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
 
             cmd.CommandText = String.Format("DELETE FROM {0} WHERE {1} = '{2}'", 
                 tableName, columnName, id);
@@ -479,6 +329,7 @@ namespace MESysWin.src
             try
             {
                 cmd.ExecuteNonQuery();
+                res = true;
             }
             catch (SQLiteException ex)
             {
@@ -518,6 +369,41 @@ namespace MESysWin.src
 
             CloseConnection();
             return res;
+        }
+
+    
+        #region TYPE_MF
+
+        public List<TypeMFunc> GetTypesMf()
+        {
+            List<TypeMFunc> list = new List<TypeMFunc>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_mf_type, name, description FROM mf_type";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    list.Add(new TypeMFunc(r.GetInt64(0), r.GetString(1), r.GetString(2)));
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return list;
         }
 
         public long InsertType(TypeMFunc type)
@@ -578,6 +464,77 @@ namespace MESysWin.src
             }
 
             CloseConnection();
+        }
+
+        public TypeMFunc GetTypeMFunc(long id)
+        {
+            TypeMFunc res = new TypeMFunc(-1, "", "");
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_mf_type, name, description FROM mf_type "
+                + "WHERE id_mf_type = @id_mf_type";
+
+            cmd.Parameters.AddWithValue("@id_mf_type", id);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    res = new TypeMFunc(r.GetInt64(0), r.GetString(1), r.GetString(2));
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return res;
+        }
+
+        #endregion
+
+        #region SYMPTOMS (LINGUISTIC VARIABLE)
+        // Вернуть список всех симптомов и их ID
+        public List<Symptom> GetSymptomList()
+        {
+            List<Symptom> res = new List<Symptom>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT id_ling_var, name, reasoning_bottom, reasoning_top "
+                + "FROM linguistic_variable";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    res.Add(new Symptom(r.GetInt64(0), r.GetString(1), r.GetDouble(2), r.GetDouble(3)));
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return res;
         }
 
         public long InsertSymptom(Symptom smp)
@@ -645,6 +602,46 @@ namespace MESysWin.src
             CloseConnection();
         }
         
+        public Symptom GetSymptom(long id)
+        {
+            var res = new Symptom(-1, "", 0, 100);
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_ling_var, name, reasoning_bottom, reasoning_top "
+                + "FROM linguistic_variable "
+                + "WHERE id_ling_var = @id_ling_var";
+
+            cmd.Parameters.AddWithValue("@id_ling_var", id);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    res = new Symptom(r.GetInt64(0), r.GetString(1), r.GetDouble(2), r.GetDouble(3));
+                    res.ID = r.GetInt64(0);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return res;
+        }
+
+        #endregion
+
+        #region MF_PARAMS
         //public long InsertMF(double c, double sigma)
         public long InsertMF(GaussMFuncParams param)
         {
@@ -707,6 +704,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -804,6 +802,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -903,6 +902,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -938,6 +938,10 @@ namespace MESysWin.src
 
             CloseConnection();
         }
+
+        #endregion
+
+        #region FUZZY_VARIABLE
 
         public long InsertFuzzyVar(FuzzyVariable fv)
         {
@@ -1018,6 +1022,108 @@ namespace MESysWin.src
 
             CloseConnection();
         }
+        
+        public List<FuzzyVariable> GetFuzzyVariables(long id_symptom)
+        {
+            List<FuzzyVariable> reslist = new List<FuzzyVariable>();
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT "
+                    + "id_var, "
+                    + "id_ling_var, "
+                    + "name, "
+                    + "id_mf_type, "
+                    + "id_bound, "
+                    + "id_triangl_mf, "
+                    + "id_trapez_mf, "
+                    + "id_gauss_mf, "
+                    + "r, g, b "
+                + "FROM fuzzy_variable "
+                + "WHERE id_ling_var = @id_ling_var";
+
+            cmd.Parameters.AddWithValue("@id_ling_var", id_symptom);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    System.Drawing.Color clr = new System.Drawing.Color();
+                    try
+                    {
+                        clr = System.Drawing.Color.FromArgb(r.GetInt32(8), r.GetInt32(9), r.GetInt32(10));
+                    }
+                    catch
+                    {
+                        clr = System.Drawing.Color.Yellow;
+                    }
+
+                    FuzzyVariable fv;
+                    try
+                    {
+                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), r.GetString(2), clr);
+                    }
+                    catch
+                    {
+                        fv = new FuzzyVariable(r.GetInt64(0), r.GetInt64(1), "", clr);
+                    }
+
+                    switch (r.GetInt64(3))
+                    {
+                        case 0:
+                            fv.Type = TypeMFuncEnum.GAUSS;
+                            break;
+                        case 1:
+                            fv.Type = TypeMFuncEnum.TRIANGULARE;
+                            break;
+                        case 2:
+                            fv.Type = TypeMFuncEnum.TRAPEZOIDAL;
+                            break;
+                        default:
+                            fv.Type = TypeMFuncEnum.NOT_SETUP;
+                            break;
+                    }
+
+                    switch (r.GetInt64(4))
+                    {
+                        case 0:
+                            fv.Bound = BoundaryTypeEnum.LEFT;
+                            break;
+                        case 1:
+                            fv.Bound = BoundaryTypeEnum.RIGHT;
+                            break;
+                        default:
+                            fv.Bound = BoundaryTypeEnum.MIDDLE;
+                            break;
+                    }
+
+                    fv.ColorLine = clr;
+
+                    try { fv.TrianglParam.ID = r.GetInt64(5); } catch { fv.TrianglParam.ID = -1; }
+                    try { fv.TrapezParam.ID = r.GetInt64(6); } catch { fv.TrapezParam.ID = -1; }
+                    try { fv.GaussParam.ID = r.GetInt64(7); } catch { fv.GaussParam.ID = -1; }
+
+                    reslist.Add(fv);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+            return reslist;
+        }
+        
+        #endregion
+
+        #region BOUNDARY_TYPE
 
         public long InsertBoundType(BoundaryType bound)
         {
@@ -1080,18 +1186,15 @@ namespace MESysWin.src
             CloseConnection();
         }
 
-        public TypeMFunc GetTypeMFunc(long id)
+        public List<BoundaryType> GetBoundaryTypes()
         {
-            TypeMFunc res = new TypeMFunc(-1, "", "");
+            var list = new List<BoundaryType>();
 
             OpenConnection();
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = "SELECT id_mf_type, name, description FROM mf_type "
-                + "WHERE id_mf_type = @id_mf_type";
-
-            cmd.Parameters.AddWithValue("@id_mf_type", id);
+            cmd.CommandText = "SELECT id_bound, name, description FROM boundary_type";
 
             try
             {
@@ -1099,7 +1202,7 @@ namespace MESysWin.src
 
                 while (r.Read())
                 {
-                    res = new TypeMFunc(r.GetInt64(0), r.GetString(1), r.GetString(2));
+                    list.Add(new BoundaryType(r.GetInt64(0), r.GetString(1), r.GetString(2)));
                 }
                 r.Close();
             }
@@ -1107,11 +1210,12 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
 
-            return res;
+            return list;
         }
 
         public BoundaryType GetBoundaryType(long id)
@@ -1140,11 +1244,14 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
             return res;
         }
+
+        #endregion
 
         public List<Quantifier> GetQuantifiers()
         {
@@ -1174,6 +1281,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -1210,6 +1318,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -1248,6 +1357,7 @@ namespace MESysWin.src
             {
                 Log.Print(ex.Message, ex.Source, Log.type.ERROR);
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             CloseConnection();
@@ -1315,6 +1425,330 @@ namespace MESysWin.src
             }
 
             CloseConnection();
+        }
+
+        #region DIAGNOSIS
+
+        public List<Diagnosis> GetDiagnosis()
+        {
+            var list = new List<Diagnosis>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_diagnosis, name, description, symptoms, treatment FROM diagnosis";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new Diagnosis(r.GetString(1));
+                    curr.ID = r.GetInt64(0);
+                    //curr.Name = r.GetString(1);
+                    curr.Description = r.GetString(2);
+                    curr.Symptoms = r.GetString(3);
+                    curr.Treatment = r.GetString(4);
+
+                    list.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return list;
+        }
+
+        public Diagnosis GetDiagnosis(long id)
+        {
+            var diagn = new Diagnosis();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_diagnosis, name, description, symptoms, treatment FROM diagnosis"
+                + "WHERE id_diagnosis = @id_diagnosis";
+
+            cmd.Parameters.AddWithValue("@id_diagnosis", id);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    diagn.ID = r.GetInt64(0);
+                    diagn.Name = r.GetString(1);
+                    diagn.Description = r.GetString(2);
+                    diagn.Symptoms = r.GetString(3);
+                    diagn.Treatment = r.GetString(4);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return diagn;
+        }
+
+        public long InsertDiagnosis(Diagnosis diagnosis)
+        {
+            long res = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "INSERT INTO diagnosis "
+                + "(name, description, symptoms, treatment) "
+                + "VALUES (@name, @description, @symptoms, @treatment)";
+
+            cmd.Parameters.AddWithValue("@name", diagnosis.Name);
+            cmd.Parameters.AddWithValue("@description", diagnosis.Description);
+            cmd.Parameters.AddWithValue("@symptoms", diagnosis.Symptoms);
+            cmd.Parameters.AddWithValue("@treatment", diagnosis.Treatment);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                diagnosis.ID = res = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return res;
+        }
+
+        public void UpdateDiagnosis(Diagnosis diagnosis)
+        {
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "UPDATE diagnosis "
+                + "SET name = @name, description = @description, symptoms = @symptoms, treatment = @treatment "
+                + "WHERE id_diagnosis = @id_diagnosis";
+
+            cmd.Parameters.AddWithValue("@id_diagnosis", diagnosis.ID);
+            cmd.Parameters.AddWithValue("@name", diagnosis.Name);
+            cmd.Parameters.AddWithValue("@description", diagnosis.Description);
+            cmd.Parameters.AddWithValue("@symptoms", diagnosis.Symptoms);
+            cmd.Parameters.AddWithValue("@treatment", diagnosis.Treatment);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+        }
+
+        #endregion
+
+        public List<Rule> GetRuleList()
+        {
+            var ruleList = new List<Rule>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_rule, id_diagnosis, preview FROM knowledge_base";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var currRule = new Rule();
+
+                    currRule.ID = r.GetInt64(0);
+                    currRule.Conclusion.ID = r.GetInt64(1);
+                    currRule.Preview = r.GetString(2);
+
+                    ruleList.Add(currRule);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            foreach(var rul in ruleList)
+            {
+                rul.Conclusion = GetDiagnosis(rul.Conclusion.ID);
+            }
+
+            return ruleList;
+        }
+
+        public List<Antecedent> GetAntecedentList()
+        {
+            var res = new List<Antecedent>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_antecedent, id_ling_var, id_var, id_quantifier, preview FROM antecedent";
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new Antecedent();
+
+                    curr.ID = r.GetInt64(0);
+                    curr.LinguisticVariable = new Symptom(r.GetInt64(1), "", 0, 100);
+                    curr.FuzzyVar = new FuzzyVariable(r.GetInt64(2), r.GetInt64(1), "", System.Drawing.Color.Black);
+                    curr.Quant = new Quantifier("", (QuantifierEnum)r.GetInt64(3));
+                    curr.Preview = r.GetString(4);
+
+                    res.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            foreach (var ant in res)
+            {
+                ant.LinguisticVariable = GetSymptom(ant.LinguisticVariable.ID);
+
+                var fList = GetFuzzyVariables(ant.LinguisticVariable.ID);
+                ant.FuzzyVar = fList.Find(x => x.ID == ant.FuzzyVar.ID);
+
+                var qList = GetQuantifiers();
+                ant.Quant = qList.Find(x => x.ID == ant.Quant.ID);
+            }
+
+            return res;
+        }
+
+        public long InsertAntecedent(Antecedent ant)
+        {
+            long res = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_antecedent, id_ling_var, id_var, id_quantifier, preview FROM antecedent "
+                + "WHERE id_ling_var = @id_ling_var AND id_var = @id_var AND id_quantifier = @id_quantifier";
+
+            cmd.Parameters.AddWithValue("@id_ling_var", ant.LinguisticVariable.ID);
+            cmd.Parameters.AddWithValue("@id_var", ant.FuzzyVar.ID);
+            cmd.Parameters.AddWithValue("@id_quantifier", ant.Quant.ID);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    res = ant.ID = r.GetInt64(0);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (ant.ID == -1)
+            {
+
+                cmd.CommandText = "INSERT INTO antecedent "
+                    + "(id_ling_var, id_var, id_quantifier, preview) "
+                    + "VALUES (@id_ling_var, @id_var, @id_quantifier, @preview)";
+
+                cmd.Parameters.AddWithValue("@id_ling_var", ant.LinguisticVariable.ID);
+                cmd.Parameters.AddWithValue("@id_var", ant.FuzzyVar.ID);
+                cmd.Parameters.AddWithValue("@id_quantifier", ant.Quant.ID);
+                cmd.Parameters.AddWithValue("@preview", ant.Preview);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    ant.ID = res = conn.LastInsertRowId;
+                }
+                catch (SQLiteException ex)
+                {
+                    Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } else
+            {
+                cmd.CommandText = "UPDATE antecedent "
+                + "SET id_ling_var = @id_ling_var, id_var = @id_var, id_quantifier = @id_quantifier, preview = @preview "
+                + "WHERE id_antecedent = @id_antecedent";
+
+                cmd.Parameters.AddWithValue("@id_antecedent", ant.ID);
+                cmd.Parameters.AddWithValue("@id_ling_var", ant.LinguisticVariable.ID);
+                cmd.Parameters.AddWithValue("@id_var", ant.FuzzyVar.ID);
+                cmd.Parameters.AddWithValue("@id_quantifier", ant.Quant.ID);
+                cmd.Parameters.AddWithValue("@preview", ant.Preview);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    //ant.ID = res = conn.LastInsertRowId;
+                }
+                catch (SQLiteException ex)
+                {
+                    Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            CloseConnection();
+
+            return res;
         }
     }
 }
