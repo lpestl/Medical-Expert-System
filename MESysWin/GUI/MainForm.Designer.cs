@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button1 = new System.Windows.Forms.Button();
             this.statusStripMainForm = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -67,13 +67,13 @@
             this.pictureBoxBg = new System.Windows.Forms.PictureBox();
             this.tabPageConsultation = new System.Windows.Forms.TabPage();
             this.tabPageBase = new System.Windows.Forms.TabPage();
-            this.dataGridViewBase = new System.Windows.Forms.DataGridView();
             this.groupBoxBase = new System.Windows.Forms.GroupBox();
+            this.buttonEditRule = new System.Windows.Forms.Button();
+            this.buttonRemoveRule = new System.Windows.Forms.Button();
+            this.buttonAddRule = new System.Windows.Forms.Button();
+            this.dataGridViewBase = new System.Windows.Forms.DataGridView();
             this.IdRuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonAddRule = new System.Windows.Forms.Button();
-            this.buttonRemoveRule = new System.Windows.Forms.Button();
-            this.buttonEditRule = new System.Windows.Forms.Button();
             this.IdDiagnosisColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
@@ -82,8 +82,8 @@
             this.tabPageMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBg)).BeginInit();
             this.tabPageBase.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).BeginInit();
             this.groupBoxBase.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -195,6 +195,7 @@
             this.kbaseEditorToolStripMenuItem.Name = "kbaseEditorToolStripMenuItem";
             this.kbaseEditorToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.kbaseEditorToolStripMenuItem.Text = "Редактор базы знаний";
+            this.kbaseEditorToolStripMenuItem.Click += new System.EventHandler(this.kbaseEditorToolStripMenuItem_Click);
             // 
             // kbToolStripMenuItem
             // 
@@ -422,28 +423,6 @@
             this.tabPageBase.Text = "База знаний";
             this.tabPageBase.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewBase
-            // 
-            this.dataGridViewBase.AllowUserToAddRows = false;
-            this.dataGridViewBase.AllowUserToDeleteRows = false;
-            this.dataGridViewBase.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewBase.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridViewBase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewBase.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IdRuleColumn,
-            this.RuleColumn,
-            this.IdDiagnosisColumn});
-            this.dataGridViewBase.Location = new System.Drawing.Point(6, 19);
-            this.dataGridViewBase.Name = "dataGridViewBase";
-            this.dataGridViewBase.ReadOnly = true;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewBase.RowTemplate.Height = 66;
-            this.dataGridViewBase.Size = new System.Drawing.Size(952, 515);
-            this.dataGridViewBase.TabIndex = 0;
-            // 
             // groupBoxBase
             // 
             this.groupBoxBase.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -460,6 +439,61 @@
             this.groupBoxBase.TabStop = false;
             this.groupBoxBase.Text = "Правила БАЗЫ ЗНАНИЙ";
             // 
+            // buttonEditRule
+            // 
+            this.buttonEditRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonEditRule.Location = new System.Drawing.Point(318, 540);
+            this.buttonEditRule.Name = "buttonEditRule";
+            this.buttonEditRule.Size = new System.Drawing.Size(150, 23);
+            this.buttonEditRule.TabIndex = 3;
+            this.buttonEditRule.Text = "Изменить правило";
+            this.buttonEditRule.UseVisualStyleBackColor = true;
+            this.buttonEditRule.Click += new System.EventHandler(this.buttonEditRule_Click);
+            // 
+            // buttonRemoveRule
+            // 
+            this.buttonRemoveRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRemoveRule.Location = new System.Drawing.Point(162, 540);
+            this.buttonRemoveRule.Name = "buttonRemoveRule";
+            this.buttonRemoveRule.Size = new System.Drawing.Size(150, 23);
+            this.buttonRemoveRule.TabIndex = 2;
+            this.buttonRemoveRule.Text = "Удалить правило";
+            this.buttonRemoveRule.UseVisualStyleBackColor = true;
+            this.buttonRemoveRule.Click += new System.EventHandler(this.buttonRemoveRule_Click);
+            // 
+            // buttonAddRule
+            // 
+            this.buttonAddRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonAddRule.Location = new System.Drawing.Point(6, 540);
+            this.buttonAddRule.Name = "buttonAddRule";
+            this.buttonAddRule.Size = new System.Drawing.Size(150, 23);
+            this.buttonAddRule.TabIndex = 1;
+            this.buttonAddRule.Text = "Добавить правило";
+            this.buttonAddRule.UseVisualStyleBackColor = true;
+            this.buttonAddRule.Click += new System.EventHandler(this.buttonAddRule_Click);
+            // 
+            // dataGridViewBase
+            // 
+            this.dataGridViewBase.AllowUserToAddRows = false;
+            this.dataGridViewBase.AllowUserToDeleteRows = false;
+            this.dataGridViewBase.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewBase.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewBase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewBase.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IdRuleColumn,
+            this.RuleColumn,
+            this.IdDiagnosisColumn});
+            this.dataGridViewBase.Location = new System.Drawing.Point(6, 19);
+            this.dataGridViewBase.Name = "dataGridViewBase";
+            this.dataGridViewBase.ReadOnly = true;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewBase.RowTemplate.Height = 66;
+            this.dataGridViewBase.Size = new System.Drawing.Size(952, 515);
+            this.dataGridViewBase.TabIndex = 0;
+            // 
             // IdRuleColumn
             // 
             this.IdRuleColumn.HeaderText = "ID";
@@ -473,37 +507,6 @@
             this.RuleColumn.HeaderText = "Правило";
             this.RuleColumn.Name = "RuleColumn";
             this.RuleColumn.ReadOnly = true;
-            // 
-            // buttonAddRule
-            // 
-            this.buttonAddRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonAddRule.Location = new System.Drawing.Point(6, 540);
-            this.buttonAddRule.Name = "buttonAddRule";
-            this.buttonAddRule.Size = new System.Drawing.Size(150, 23);
-            this.buttonAddRule.TabIndex = 1;
-            this.buttonAddRule.Text = "Добавить правило";
-            this.buttonAddRule.UseVisualStyleBackColor = true;
-            this.buttonAddRule.Click += new System.EventHandler(this.buttonAddRule_Click);
-            // 
-            // buttonRemoveRule
-            // 
-            this.buttonRemoveRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRemoveRule.Location = new System.Drawing.Point(162, 540);
-            this.buttonRemoveRule.Name = "buttonRemoveRule";
-            this.buttonRemoveRule.Size = new System.Drawing.Size(150, 23);
-            this.buttonRemoveRule.TabIndex = 2;
-            this.buttonRemoveRule.Text = "Удалить правило";
-            this.buttonRemoveRule.UseVisualStyleBackColor = true;
-            // 
-            // buttonEditRule
-            // 
-            this.buttonEditRule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonEditRule.Location = new System.Drawing.Point(318, 540);
-            this.buttonEditRule.Name = "buttonEditRule";
-            this.buttonEditRule.Size = new System.Drawing.Size(150, 23);
-            this.buttonEditRule.TabIndex = 3;
-            this.buttonEditRule.Text = "Изменить правило";
-            this.buttonEditRule.UseVisualStyleBackColor = true;
             // 
             // IdDiagnosisColumn
             // 
@@ -535,8 +538,8 @@
             this.tabPageMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBg)).EndInit();
             this.tabPageBase.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).EndInit();
             this.groupBoxBase.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

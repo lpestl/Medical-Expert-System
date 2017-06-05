@@ -1476,8 +1476,8 @@ namespace MESysWin.src
 
             SQLiteCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = "SELECT id_diagnosis, name, description, symptoms, treatment FROM diagnosis"
-                + "WHERE id_diagnosis = @id_diagnosis";
+            cmd.CommandText = "SELECT id_diagnosis, name, description, symptoms, treatment FROM diagnosis "
+                + "WHERE id_diagnosis = @id_diagnosis;";
 
             cmd.Parameters.AddWithValue("@id_diagnosis", id);
 
@@ -1592,6 +1592,7 @@ namespace MESysWin.src
                     var currRule = new Rule();
 
                     currRule.ID = r.GetInt64(0);
+                    currRule.Conclusion = new Diagnosis();
                     currRule.Conclusion.ID = r.GetInt64(1);
                     currRule.Preview = r.GetString(2);
 
@@ -1608,6 +1609,10 @@ namespace MESysWin.src
 
             CloseConnection();
 
+            /*for (int i=0; i < ruleList.Count; i++)
+            {
+                ruleList[i].Conclusion = GetDiagnosis(ruleList[i].Conclusion.ID);
+            }*/
             foreach(var rul in ruleList)
             {
                 rul.Conclusion = GetDiagnosis(rul.Conclusion.ID);
@@ -1749,6 +1754,153 @@ namespace MESysWin.src
             CloseConnection();
 
             return res;
+        }
+
+        public long InsertRule(Rule rule)
+        {
+            long res = -1;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+            
+            cmd.CommandText = "INSERT INTO knowledge_base "
+                + "(id_diagnosis, preview) "
+                + "VALUES (@id_diagnosis, @preview)";
+            
+            cmd.Parameters.AddWithValue("@id_diagnosis", rule.Conclusion.ID);
+            cmd.Parameters.AddWithValue("@preview", rule.Preview);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                rule.ID = res = conn.LastInsertRowId;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            return res;
+        }
+
+        public bool InsertRulesAntecedents(List<Antecedent> antlist, Rule rule)
+        {
+            bool res = false;
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "BEGIN; ";
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                res = false;
+            }
+
+            foreach (var ant in antlist)
+            {
+                cmd.CommandText = "INSERT INTO antecedent_list "
+                + "(id_rule, id_antecedent) "
+                + "VALUES (@id_rule, @id_antecedent); ";
+
+                cmd.Parameters.AddWithValue("@id_rule", rule.ID);
+                cmd.Parameters.AddWithValue("@id_antecedent", ant.ID);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException ex)
+                {
+                    Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    res = false;
+                }
+            }
+
+            cmd.CommandText = "COMMIT; ";
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                res = true;
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                res = false;
+            }
+
+            CloseConnection();
+
+            return res;
+        }
+
+        public List<Antecedent> GetAntecedentsInRule(Rule rule)
+        {
+            var antlist = new List<Antecedent>();
+
+            OpenConnection();
+
+            SQLiteCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT id_rule, id_antecedent FROM antecedent_list " +
+                "WHERE id_rule = @id_rule;";
+
+            cmd.Parameters.AddWithValue("@id_rule", rule.ID);
+
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var curr = new Antecedent();
+
+                    curr.ID = r.GetInt64(1);
+
+                    antlist.Add(curr);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Print(ex.Message, ex.Source, Log.type.ERROR);
+                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            CloseConnection();
+
+            var allAnt = GetAntecedentList();
+            for (int i=0; i < antlist.Count; i++)
+            {
+                foreach (var aa in allAnt)
+                {
+                    if (antlist[i].ID == aa.ID)
+                    {
+                        antlist[i] = aa;
+                        break;
+                    }
+                }
+            }
+
+            return antlist;
         }
     }
 }

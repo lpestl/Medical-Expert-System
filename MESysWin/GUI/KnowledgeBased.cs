@@ -29,18 +29,46 @@ namespace MESysWin.GUI
             UpdateComboQuant();
             UpdateComboSymptoms();
             UpdateComboDiagnosis();
-            
+
             NewCombos();
-                        
-            UpdateRulePreview();
+
+            UpdateAntecedentsInRule();
+            UpdateAntecedents();
             UpdateAntecedentPreview();
+            UpdateRulePreview();
+
+            if (prototype.ID != -1) {
+                comboBoxDiagn.Text = DatabaseManager.Instance.GetDiagnosis(prototype.Conclusion.ID).Name;
+            }
 
             richTextBoxPreview.Text = prototype.Preview;
         }
 
+        private void UpdateAntecedentsInRule()
+        {
+            if (dataGridViewInRule.Rows.Count > 0)
+            {
+                dataGridViewInRule.Rows.Clear();
+            }
+            if (prototype.ID >= 0)
+            {
+                var antlist = DatabaseManager.Instance.GetAntecedentsInRule(prototype);
+                foreach(var ant in antlist)
+                {
+                    string[] row = new string[] { ant.ID.ToString(), ant.Preview };
+                    dataGridViewInRule.Rows.Add(row);
+                }
+            }
+
+        }
+
         private void UpdateAntecedents()
         {
-            if (antecedentList != null) antecedentList.Clear();
+            if (antecedentList != null)
+            {
+                antecedentList.Clear();
+                dataGridViewAntecedent.Rows.Clear();
+            }
             antecedentList = DatabaseManager.Instance.GetAntecedentList();
             foreach (var a in antecedentList)
             {
@@ -111,21 +139,58 @@ namespace MESysWin.GUI
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            /*if (!checkBoxAllOk.Checked)
+            if ((comboBoxDiagn.SelectedIndex < 0) || (dataGridViewInRule.Rows.Count == 0))
             {
-                //MessageBox.Show("Нихрена не в порядке, продолжите редактировать правило");
-                //buttonAdd.DialogResult = DialogResult.OK;
+                MessageBox.Show("В правиле не введен диагноз или список антецедентов пуст. Правило не может быть без заключения или не иметь предпосылок. Заполните правило правильно!", "Правило не заполнено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             } else
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }*/
+                if (prototype.ID >= 0)
+                {
+                    DatabaseManager.Instance.DeleteFromTable(prototype.ID, "knowledge_base", "id_rule");
+                }
+                //if (prototype.ID == -1)
+                //{
+                    prototype.ID = DatabaseManager.Instance.InsertRule(prototype);
+
+                    List<Antecedent> rullist = new List<Antecedent>();
+                    for (int i=0; i<dataGridViewInRule.Rows.Count; i++)
+                    {
+                        var anttemp = new Antecedent();
+                        anttemp.ID = Convert.ToInt64(dataGridViewInRule.Rows[i].Cells[0].Value);
+                        anttemp.Preview = dataGridViewInRule.Rows[i].Cells[1].Value.ToString();
+                        rullist.Add(anttemp);
+                    }
+
+                    if (DatabaseManager.Instance.InsertRulesAntecedents(rullist, prototype))
+                    {
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+
+                //} 
+            }
         }
 
         private void dataGridViewAntecedent_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            MessageBox.Show(String.Format("{0} - {1}", dataGridViewAntecedent.Rows[e.RowIndex].Cells[0].Value.ToString(),
-                dataGridViewAntecedent.Rows[e.RowIndex].Cells[1].Value.ToString()));
+            /*MessageBox.Show(String.Format("{0} - {1}", dataGridViewAntecedent.Rows[e.RowIndex].Cells[0].Value.ToString(),
+                dataGridViewAntecedent.Rows[e.RowIndex].Cells[1].Value.ToString()));*/
+            bool antuse = false;
+            for (int i = 0; i < dataGridViewInRule.Rows.Count; i++)
+            {
+                if (Convert.ToInt64(dataGridViewAntecedent.Rows[e.RowIndex].Cells[0].Value) == Convert.ToInt64(dataGridViewInRule.Rows[i].Cells[0].Value))
+                {
+                    MessageBox.Show("Выбранный антецедент уже используется в этом правиле", "Повтор антецедента", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    antuse = true;
+                    break;
+                } 
+            }
+            if (!antuse)
+            {
+                string[] row = new string[] { dataGridViewAntecedent.Rows[e.RowIndex].Cells[0].Value.ToString(), dataGridViewAntecedent.Rows[e.RowIndex].Cells[1].Value.ToString() };
+                dataGridViewInRule.Rows.Add(row);
+                UpdateRulePreview();
+            }
         }
 
         private void buttonDiagnosisEdit_Click(object sender, EventArgs e)
@@ -308,6 +373,24 @@ namespace MESysWin.GUI
 
             UpdateAntecedentPreview();
             UpdateRulePreview();
+        }
+
+        private void buttonRemove_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewInRule.SelectedCells.Count > 0)
+            {
+                //if (prototype.ID == -1)
+                //{
+                    dataGridViewInRule.Rows.RemoveAt(dataGridViewInRule.SelectedCells[0].RowIndex);
+                    UpdateRulePreview();
+                //} else
+                //{
+
+                //}
+            } else
+            {
+                MessageBox.Show("Ничего не выделено для удаления. Выделите один антецедент в правиле, чтобы его удалить.", "Удаление не произошло", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

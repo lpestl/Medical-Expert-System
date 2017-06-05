@@ -229,5 +229,46 @@ namespace MESysWin
                 UpdateRules();
             }
         }
+
+        private void kbaseEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControlMain.SelectedIndex = 2;
+        }
+
+        private void buttonRemoveRule_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewBase.SelectedCells.Count > 0)
+            {
+                DatabaseManager.Instance.DeleteFromTable(Convert.ToInt64(dataGridViewBase.Rows[dataGridViewBase.SelectedCells[0].RowIndex].Cells[0].Value), "knowledge_base", "id_rule");
+                MessageBox.Show("База знаний обновилась!", "Сообщение об изменении", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UpdateRules();
+            } else
+            {
+                MessageBox.Show("Ничего не выделено для удаления. Выделите один антецедент в правиле, чтобы его удалить.", "Удаление не произошло", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void buttonEditRule_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewBase.SelectedCells.Count > 0)
+            {
+                int i = dataGridViewBase.SelectedCells[0].RowIndex;
+                var currRule = new src.Rule();
+                currRule.ID = Convert.ToInt64(dataGridViewBase.Rows[i].Cells[0].Value);
+                currRule.Preview = dataGridViewBase.Rows[i].Cells[1].Value.ToString();
+                currRule.Conclusion = DatabaseManager.Instance.GetDiagnosis(Convert.ToInt64(dataGridViewBase.Rows[i].Cells[2].Value));
+
+                var ruleEditor = new KnowledgeBased(currRule);
+
+                if (ruleEditor.ShowDialog() == DialogResult.OK)
+                {
+                    MessageBox.Show("База знаний обновилась!", "Сообщение об изменении", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UpdateRules();
+                }
+            } else
+            {
+                MessageBox.Show("Ничего не выделено для редактирования. Выделите одно правило, чтобы его отредактировать.", "Редактирование невозможно", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
