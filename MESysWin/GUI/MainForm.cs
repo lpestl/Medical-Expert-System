@@ -270,5 +270,18 @@ namespace MESysWin
                 MessageBox.Show("Ничего не выделено для редактирования. Выделите одно правило, чтобы его отредактировать.", "Редактирование невозможно", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControlMain.SelectedIndex == 1)
+            {
+                throw new Exception(Microsoft.SqlServer.Server.SystemDataAccessKind.None.ToString());
+            }
+        }
+
+        private void diagnosDialogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControlMain.SelectedIndex = 1;
+        }
     }
 }
