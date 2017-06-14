@@ -15,6 +15,8 @@ namespace MESysWin.src
 
         public string Preview { get; set; }
 
+        public List<Antecedent> complaints;
+
         public Rule()
         {
             ID = -1;

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button1 = new System.Windows.Forms.Button();
             this.statusStripMainForm = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -66,6 +66,24 @@
             this.labelWelcome = new System.Windows.Forms.Label();
             this.pictureBoxBg = new System.Windows.Forms.PictureBox();
             this.tabPageConsultation = new System.Windows.Forms.TabPage();
+            this.groupBoxDescription = new System.Windows.Forms.GroupBox();
+            this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBoxHipotez = new System.Windows.Forms.GroupBox();
+            this.dataGridViewHipotez = new System.Windows.Forms.DataGridView();
+            this.DiagnosisColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PercentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBoxSecondHipotez = new System.Windows.Forms.GroupBox();
+            this.dataGridViewSecondHipotez = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBoxQuestion = new System.Windows.Forms.GroupBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.richTextBoxQuestion = new System.Windows.Forms.RichTextBox();
             this.tabPageBase = new System.Windows.Forms.TabPage();
             this.groupBoxBase = new System.Windows.Forms.GroupBox();
             this.buttonEditRule = new System.Windows.Forms.Button();
@@ -75,24 +93,6 @@
             this.IdRuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IdDiagnosisColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBoxQuestion = new System.Windows.Forms.GroupBox();
-            this.richTextBoxQuestion = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.groupBoxHipotez = new System.Windows.Forms.GroupBox();
-            this.groupBoxSecondHipotez = new System.Windows.Forms.GroupBox();
-            this.dataGridViewHipotez = new System.Windows.Forms.DataGridView();
-            this.DiagnosisColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PercentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewSecondHipotez = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBoxDescription = new System.Windows.Forms.GroupBox();
-            this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.menuStripLogin.SuspendLayout();
@@ -100,19 +100,19 @@
             this.tabPageMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBg)).BeginInit();
             this.tabPageConsultation.SuspendLayout();
-            this.tabPageBase.SuspendLayout();
-            this.groupBoxBase.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).BeginInit();
-            this.groupBoxQuestion.SuspendLayout();
+            this.groupBoxDescription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupBoxHipotez.SuspendLayout();
-            this.groupBoxSecondHipotez.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHipotez)).BeginInit();
+            this.groupBoxSecondHipotez.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSecondHipotez)).BeginInit();
-            this.groupBoxDescription.SuspendLayout();
+            this.groupBoxQuestion.SuspendLayout();
+            this.tabPageBase.SuspendLayout();
+            this.groupBoxBase.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -131,6 +131,7 @@
             this.statusStripMainForm.Size = new System.Drawing.Size(865, 22);
             this.statusStripMainForm.TabIndex = 1;
             this.statusStripMainForm.Text = "statusStripMainForm";
+            this.statusStripMainForm.Visible = false;
             // 
             // toolStripStatusLabelInfo
             // 
@@ -140,7 +141,6 @@
             // 
             // timerForLog
             // 
-            this.timerForLog.Enabled = true;
             this.timerForLog.Tick += new System.EventHandler(this.timerForLog_Tick);
             // 
             // menuStripMain
@@ -155,7 +155,7 @@
             this.helpToolStripMenuItem});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(865, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(770, 24);
             this.menuStripMain.TabIndex = 2;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -188,6 +188,7 @@
             this.medBookToolStripMenuItem.Name = "medBookToolStripMenuItem";
             this.medBookToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
             this.medBookToolStripMenuItem.Text = "Карта пациента";
+            this.medBookToolStripMenuItem.Visible = false;
             // 
             // diagnosDialogToolStripMenuItem
             // 
@@ -304,6 +305,7 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.settingsToolStripMenuItem.Text = "Настройки приложения";
+            this.settingsToolStripMenuItem.Visible = false;
             // 
             // helpToolStripMenuItem
             // 
@@ -327,7 +329,7 @@
             this.menuStripLogin.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.userToolStripMenuItem,
             this.modeToolStripMenuItem});
-            this.menuStripLogin.Location = new System.Drawing.Point(865, 0);
+            this.menuStripLogin.Location = new System.Drawing.Point(770, 0);
             this.menuStripLogin.Name = "menuStripLogin";
             this.menuStripLogin.Size = new System.Drawing.Size(143, 681);
             this.menuStripLogin.TabIndex = 4;
@@ -366,7 +368,7 @@
             this.tabControlMain.Multiline = true;
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(984, 607);
+            this.tabControlMain.Size = new System.Drawing.Size(889, 607);
             this.tabControlMain.TabIndex = 5;
             this.tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
             // 
@@ -379,7 +381,7 @@
             this.tabPageMain.Location = new System.Drawing.Point(4, 4);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(976, 581);
+            this.tabPageMain.Size = new System.Drawing.Size(647, 581);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "Welcome";
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -416,7 +418,7 @@
             this.labelWelcome.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.labelWelcome.Location = new System.Drawing.Point(3, 3);
             this.labelWelcome.Name = "labelWelcome";
-            this.labelWelcome.Size = new System.Drawing.Size(970, 38);
+            this.labelWelcome.Size = new System.Drawing.Size(641, 38);
             this.labelWelcome.TabIndex = 1;
             this.labelWelcome.Text = "Информационная система медицинской диагностики на базе нечеткой логики ";
             this.labelWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -428,7 +430,7 @@
             this.pictureBoxBg.Image = global::MESysWin.Properties.Resources.bgAbout;
             this.pictureBoxBg.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxBg.Name = "pictureBoxBg";
-            this.pictureBoxBg.Size = new System.Drawing.Size(970, 575);
+            this.pictureBoxBg.Size = new System.Drawing.Size(641, 575);
             this.pictureBoxBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxBg.TabIndex = 0;
             this.pictureBoxBg.TabStop = false;
@@ -441,10 +443,216 @@
             this.tabPageConsultation.Location = new System.Drawing.Point(4, 4);
             this.tabPageConsultation.Name = "tabPageConsultation";
             this.tabPageConsultation.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageConsultation.Size = new System.Drawing.Size(976, 581);
+            this.tabPageConsultation.Size = new System.Drawing.Size(881, 581);
             this.tabPageConsultation.TabIndex = 1;
             this.tabPageConsultation.Text = "Консультация";
             this.tabPageConsultation.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxDescription
+            // 
+            this.groupBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxDescription.Controls.Add(this.richTextBoxDescription);
+            this.groupBoxDescription.Location = new System.Drawing.Point(6, 328);
+            this.groupBoxDescription.Name = "groupBoxDescription";
+            this.groupBoxDescription.Size = new System.Drawing.Size(860, 238);
+            this.groupBoxDescription.TabIndex = 2;
+            this.groupBoxDescription.TabStop = false;
+            this.groupBoxDescription.Text = "Описание заболевания:";
+            // 
+            // richTextBoxDescription
+            // 
+            this.richTextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxDescription.Location = new System.Drawing.Point(3, 16);
+            this.richTextBoxDescription.Name = "richTextBoxDescription";
+            this.richTextBoxDescription.Size = new System.Drawing.Size(854, 219);
+            this.richTextBoxDescription.TabIndex = 0;
+            this.richTextBoxDescription.Text = "";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(6, 173);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBoxHipotez);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBoxSecondHipotez);
+            this.splitContainer1.Size = new System.Drawing.Size(863, 149);
+            this.splitContainer1.SplitterDistance = 436;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // groupBoxHipotez
+            // 
+            this.groupBoxHipotez.Controls.Add(this.dataGridViewHipotez);
+            this.groupBoxHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxHipotez.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxHipotez.Name = "groupBoxHipotez";
+            this.groupBoxHipotez.Size = new System.Drawing.Size(436, 149);
+            this.groupBoxHipotez.TabIndex = 0;
+            this.groupBoxHipotez.TabStop = false;
+            this.groupBoxHipotez.Text = "Основная гипотеза:";
+            // 
+            // dataGridViewHipotez
+            // 
+            this.dataGridViewHipotez.AllowUserToAddRows = false;
+            this.dataGridViewHipotez.AllowUserToDeleteRows = false;
+            this.dataGridViewHipotez.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewHipotez.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DiagnosisColumn,
+            this.PercentColumn});
+            this.dataGridViewHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewHipotez.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewHipotez.Name = "dataGridViewHipotez";
+            this.dataGridViewHipotez.ReadOnly = true;
+            this.dataGridViewHipotez.Size = new System.Drawing.Size(430, 130);
+            this.dataGridViewHipotez.TabIndex = 0;
+            this.dataGridViewHipotez.SelectionChanged += new System.EventHandler(this.dataGridViewHipotez_SelectionChanged);
+            // 
+            // DiagnosisColumn
+            // 
+            this.DiagnosisColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DiagnosisColumn.HeaderText = "Диагноз";
+            this.DiagnosisColumn.Name = "DiagnosisColumn";
+            this.DiagnosisColumn.ReadOnly = true;
+            // 
+            // PercentColumn
+            // 
+            this.PercentColumn.HeaderText = "Вероятность (%):";
+            this.PercentColumn.Name = "PercentColumn";
+            this.PercentColumn.ReadOnly = true;
+            this.PercentColumn.Width = 150;
+            // 
+            // groupBoxSecondHipotez
+            // 
+            this.groupBoxSecondHipotez.Controls.Add(this.dataGridViewSecondHipotez);
+            this.groupBoxSecondHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxSecondHipotez.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxSecondHipotez.Name = "groupBoxSecondHipotez";
+            this.groupBoxSecondHipotez.Size = new System.Drawing.Size(423, 149);
+            this.groupBoxSecondHipotez.TabIndex = 0;
+            this.groupBoxSecondHipotez.TabStop = false;
+            this.groupBoxSecondHipotez.Text = "Дополнительные предположения:";
+            // 
+            // dataGridViewSecondHipotez
+            // 
+            this.dataGridViewSecondHipotez.AllowUserToAddRows = false;
+            this.dataGridViewSecondHipotez.AllowUserToDeleteRows = false;
+            this.dataGridViewSecondHipotez.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSecondHipotez.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dataGridViewSecondHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewSecondHipotez.GridColor = System.Drawing.Color.LightSalmon;
+            this.dataGridViewSecondHipotez.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewSecondHipotez.Name = "dataGridViewSecondHipotez";
+            this.dataGridViewSecondHipotez.ReadOnly = true;
+            this.dataGridViewSecondHipotez.Size = new System.Drawing.Size(417, 130);
+            this.dataGridViewSecondHipotez.TabIndex = 1;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Диагноз";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Вероятность (%):";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 150;
+            // 
+            // groupBoxQuestion
+            // 
+            this.groupBoxQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxQuestion.Controls.Add(this.button6);
+            this.groupBoxQuestion.Controls.Add(this.button5);
+            this.groupBoxQuestion.Controls.Add(this.button4);
+            this.groupBoxQuestion.Controls.Add(this.button3);
+            this.groupBoxQuestion.Controls.Add(this.button2);
+            this.groupBoxQuestion.Controls.Add(this.richTextBoxQuestion);
+            this.groupBoxQuestion.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxQuestion.Name = "groupBoxQuestion";
+            this.groupBoxQuestion.Size = new System.Drawing.Size(869, 160);
+            this.groupBoxQuestion.TabIndex = 0;
+            this.groupBoxQuestion.TabStop = false;
+            this.groupBoxQuestion.Text = "Ответьте, пожалуйста, на вопрос:";
+            // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.Location = new System.Drawing.Point(763, 122);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(100, 23);
+            this.button6.TabIndex = 5;
+            this.button6.Text = "Да (+)";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(657, 122);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(100, 23);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "Наверное да";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(219, 122);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(432, 23);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "Не знаю (0)";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Location = new System.Drawing.Point(113, 122);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 23);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Наверное нет";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Location = new System.Drawing.Point(7, 122);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(100, 23);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Нет (-)";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // richTextBoxQuestion
+            // 
+            this.richTextBoxQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxQuestion.Location = new System.Drawing.Point(7, 20);
+            this.richTextBoxQuestion.Name = "richTextBoxQuestion";
+            this.richTextBoxQuestion.Size = new System.Drawing.Size(856, 96);
+            this.richTextBoxQuestion.TabIndex = 0;
+            this.richTextBoxQuestion.Text = "";
             // 
             // tabPageBase
             // 
@@ -522,8 +730,8 @@
             this.dataGridViewBase.Location = new System.Drawing.Point(6, 19);
             this.dataGridViewBase.Name = "dataGridViewBase";
             this.dataGridViewBase.ReadOnly = true;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewBase.RowTemplate.Height = 66;
             this.dataGridViewBase.Size = new System.Drawing.Size(952, 515);
             this.dataGridViewBase.TabIndex = 0;
@@ -548,211 +756,12 @@
             this.IdDiagnosisColumn.Name = "IdDiagnosisColumn";
             this.IdDiagnosisColumn.ReadOnly = true;
             // 
-            // groupBoxQuestion
-            // 
-            this.groupBoxQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxQuestion.Controls.Add(this.button6);
-            this.groupBoxQuestion.Controls.Add(this.button5);
-            this.groupBoxQuestion.Controls.Add(this.button4);
-            this.groupBoxQuestion.Controls.Add(this.button3);
-            this.groupBoxQuestion.Controls.Add(this.button2);
-            this.groupBoxQuestion.Controls.Add(this.richTextBoxQuestion);
-            this.groupBoxQuestion.Location = new System.Drawing.Point(6, 6);
-            this.groupBoxQuestion.Name = "groupBoxQuestion";
-            this.groupBoxQuestion.Size = new System.Drawing.Size(964, 160);
-            this.groupBoxQuestion.TabIndex = 0;
-            this.groupBoxQuestion.TabStop = false;
-            this.groupBoxQuestion.Text = "Ответьте, пожалуйста, на вопрос:";
-            // 
-            // richTextBoxQuestion
-            // 
-            this.richTextBoxQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxQuestion.Location = new System.Drawing.Point(7, 20);
-            this.richTextBoxQuestion.Name = "richTextBoxQuestion";
-            this.richTextBoxQuestion.Size = new System.Drawing.Size(951, 96);
-            this.richTextBoxQuestion.TabIndex = 0;
-            this.richTextBoxQuestion.Text = "";
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(7, 122);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Нет (-)";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(113, 122);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Наверное нет";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(219, 122);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(527, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Не знаю (0)";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(752, 122);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Наверное да";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.Location = new System.Drawing.Point(858, 122);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 23);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "Да (+)";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(6, 173);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBoxHipotez);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.groupBoxSecondHipotez);
-            this.splitContainer1.Size = new System.Drawing.Size(958, 149);
-            this.splitContainer1.SplitterDistance = 484;
-            this.splitContainer1.TabIndex = 1;
-            // 
-            // groupBoxHipotez
-            // 
-            this.groupBoxHipotez.Controls.Add(this.dataGridViewHipotez);
-            this.groupBoxHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxHipotez.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxHipotez.Name = "groupBoxHipotez";
-            this.groupBoxHipotez.Size = new System.Drawing.Size(484, 149);
-            this.groupBoxHipotez.TabIndex = 0;
-            this.groupBoxHipotez.TabStop = false;
-            this.groupBoxHipotez.Text = "Основная гипотеза:";
-            // 
-            // groupBoxSecondHipotez
-            // 
-            this.groupBoxSecondHipotez.Controls.Add(this.dataGridViewSecondHipotez);
-            this.groupBoxSecondHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxSecondHipotez.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxSecondHipotez.Name = "groupBoxSecondHipotez";
-            this.groupBoxSecondHipotez.Size = new System.Drawing.Size(470, 149);
-            this.groupBoxSecondHipotez.TabIndex = 0;
-            this.groupBoxSecondHipotez.TabStop = false;
-            this.groupBoxSecondHipotez.Text = "Дополнительные предполжения:";
-            // 
-            // dataGridViewHipotez
-            // 
-            this.dataGridViewHipotez.AllowUserToAddRows = false;
-            this.dataGridViewHipotez.AllowUserToDeleteRows = false;
-            this.dataGridViewHipotez.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHipotez.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DiagnosisColumn,
-            this.PercentColumn});
-            this.dataGridViewHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewHipotez.Location = new System.Drawing.Point(3, 16);
-            this.dataGridViewHipotez.Name = "dataGridViewHipotez";
-            this.dataGridViewHipotez.ReadOnly = true;
-            this.dataGridViewHipotez.Size = new System.Drawing.Size(478, 130);
-            this.dataGridViewHipotez.TabIndex = 0;
-            // 
-            // DiagnosisColumn
-            // 
-            this.DiagnosisColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DiagnosisColumn.HeaderText = "Диагноз";
-            this.DiagnosisColumn.Name = "DiagnosisColumn";
-            this.DiagnosisColumn.ReadOnly = true;
-            // 
-            // PercentColumn
-            // 
-            this.PercentColumn.HeaderText = "Вероятность (%):";
-            this.PercentColumn.Name = "PercentColumn";
-            this.PercentColumn.ReadOnly = true;
-            this.PercentColumn.Width = 150;
-            // 
-            // dataGridViewSecondHipotez
-            // 
-            this.dataGridViewSecondHipotez.AllowUserToAddRows = false;
-            this.dataGridViewSecondHipotez.AllowUserToDeleteRows = false;
-            this.dataGridViewSecondHipotez.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewSecondHipotez.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
-            this.dataGridViewSecondHipotez.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSecondHipotez.Location = new System.Drawing.Point(3, 16);
-            this.dataGridViewSecondHipotez.Name = "dataGridViewSecondHipotez";
-            this.dataGridViewSecondHipotez.ReadOnly = true;
-            this.dataGridViewSecondHipotez.Size = new System.Drawing.Size(464, 130);
-            this.dataGridViewSecondHipotez.TabIndex = 1;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Диагноз";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Вероятность (%):";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 150;
-            // 
-            // groupBoxDescription
-            // 
-            this.groupBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxDescription.Controls.Add(this.richTextBoxDescription);
-            this.groupBoxDescription.Location = new System.Drawing.Point(6, 328);
-            this.groupBoxDescription.Name = "groupBoxDescription";
-            this.groupBoxDescription.Size = new System.Drawing.Size(955, 238);
-            this.groupBoxDescription.TabIndex = 2;
-            this.groupBoxDescription.TabStop = false;
-            this.groupBoxDescription.Text = "Описание заболевания:";
-            // 
-            // richTextBoxDescription
-            // 
-            this.richTextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxDescription.Location = new System.Drawing.Point(3, 16);
-            this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(949, 219);
-            this.richTextBoxDescription.TabIndex = 0;
-            this.richTextBoxDescription.Text = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1008, 681);
+            this.ClientSize = new System.Drawing.Size(913, 681);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.statusStripMainForm);
             this.Controls.Add(this.menuStripMain);
@@ -771,19 +780,19 @@
             this.tabPageMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBg)).EndInit();
             this.tabPageConsultation.ResumeLayout(false);
-            this.tabPageBase.ResumeLayout(false);
-            this.groupBoxBase.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).EndInit();
-            this.groupBoxQuestion.ResumeLayout(false);
+            this.groupBoxDescription.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.groupBoxHipotez.ResumeLayout(false);
-            this.groupBoxSecondHipotez.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHipotez)).EndInit();
+            this.groupBoxSecondHipotez.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSecondHipotez)).EndInit();
-            this.groupBoxDescription.ResumeLayout(false);
+            this.groupBoxQuestion.ResumeLayout(false);
+            this.tabPageBase.ResumeLayout(false);
+            this.groupBoxBase.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

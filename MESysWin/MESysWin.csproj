@@ -43,6 +43,7 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -180,6 +181,7 @@
     <Compile Include="src\GraphicOnFrom.cs" />
     <Compile Include="src\GroupUsers.cs" />
     <Compile Include="src\Log.cs" />
+    <Compile Include="src\LogicOutput.cs" />
     <Compile Include="src\MFuncParams.cs" />
     <Compile Include="src\Quantifier.cs" />
     <Compile Include="src\Rule.cs" />
