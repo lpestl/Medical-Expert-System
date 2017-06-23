@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button1 = new System.Windows.Forms.Button();
             this.statusStripMainForm = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -93,6 +93,12 @@
             this.IdRuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RuleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IdDiagnosisColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.groupBoxSympt = new System.Windows.Forms.GroupBox();
+            this.groupBoxTreatment = new System.Windows.Forms.GroupBox();
+            this.richTextBoxSympt = new System.Windows.Forms.RichTextBox();
+            this.richTextBoxTreatment = new System.Windows.Forms.RichTextBox();
             this.statusStripMainForm.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.menuStripLogin.SuspendLayout();
@@ -113,6 +119,16 @@
             this.tabPageBase.SuspendLayout();
             this.groupBoxBase.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.groupBoxSympt.SuspendLayout();
+            this.groupBoxTreatment.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -381,7 +397,7 @@
             this.tabPageMain.Location = new System.Drawing.Point(4, 4);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(647, 581);
+            this.tabPageMain.Size = new System.Drawing.Size(881, 581);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "Welcome";
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -391,7 +407,7 @@
             this.labelWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelWarning.BackColor = System.Drawing.Color.MidnightBlue;
             this.labelWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.labelWarning.Location = new System.Drawing.Point(524, 445);
+            this.labelWarning.Location = new System.Drawing.Point(429, 445);
             this.labelWarning.Name = "labelWarning";
             this.labelWarning.Size = new System.Drawing.Size(446, 133);
             this.labelWarning.TabIndex = 3;
@@ -418,7 +434,7 @@
             this.labelWelcome.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.labelWelcome.Location = new System.Drawing.Point(3, 3);
             this.labelWelcome.Name = "labelWelcome";
-            this.labelWelcome.Size = new System.Drawing.Size(641, 38);
+            this.labelWelcome.Size = new System.Drawing.Size(875, 38);
             this.labelWelcome.TabIndex = 1;
             this.labelWelcome.Text = "Информационная система медицинской диагностики на базе нечеткой логики ";
             this.labelWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -430,7 +446,7 @@
             this.pictureBoxBg.Image = global::MESysWin.Properties.Resources.bgAbout;
             this.pictureBoxBg.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxBg.Name = "pictureBoxBg";
-            this.pictureBoxBg.Size = new System.Drawing.Size(641, 575);
+            this.pictureBoxBg.Size = new System.Drawing.Size(875, 575);
             this.pictureBoxBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxBg.TabIndex = 0;
             this.pictureBoxBg.TabStop = false;
@@ -453,7 +469,7 @@
             this.groupBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxDescription.Controls.Add(this.richTextBoxDescription);
+            this.groupBoxDescription.Controls.Add(this.splitContainer2);
             this.groupBoxDescription.Location = new System.Drawing.Point(6, 328);
             this.groupBoxDescription.Name = "groupBoxDescription";
             this.groupBoxDescription.Size = new System.Drawing.Size(860, 238);
@@ -464,9 +480,9 @@
             // richTextBoxDescription
             // 
             this.richTextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxDescription.Location = new System.Drawing.Point(3, 16);
+            this.richTextBoxDescription.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(854, 219);
+            this.richTextBoxDescription.Size = new System.Drawing.Size(437, 219);
             this.richTextBoxDescription.TabIndex = 0;
             this.richTextBoxDescription.Text = "";
             // 
@@ -555,6 +571,7 @@
             this.dataGridViewSecondHipotez.ReadOnly = true;
             this.dataGridViewSecondHipotez.Size = new System.Drawing.Size(417, 130);
             this.dataGridViewSecondHipotez.TabIndex = 1;
+            this.dataGridViewSecondHipotez.SelectionChanged += new System.EventHandler(this.dataGridViewSecondHipotez_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -660,7 +677,7 @@
             this.tabPageBase.Location = new System.Drawing.Point(4, 4);
             this.tabPageBase.Name = "tabPageBase";
             this.tabPageBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBase.Size = new System.Drawing.Size(976, 581);
+            this.tabPageBase.Size = new System.Drawing.Size(881, 581);
             this.tabPageBase.TabIndex = 2;
             this.tabPageBase.Text = "База знаний";
             this.tabPageBase.UseVisualStyleBackColor = true;
@@ -730,8 +747,8 @@
             this.dataGridViewBase.Location = new System.Drawing.Point(6, 19);
             this.dataGridViewBase.Name = "dataGridViewBase";
             this.dataGridViewBase.ReadOnly = true;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewBase.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewBase.RowTemplate.Height = 66;
             this.dataGridViewBase.Size = new System.Drawing.Size(952, 515);
             this.dataGridViewBase.TabIndex = 0;
@@ -755,6 +772,81 @@
             this.IdDiagnosisColumn.HeaderText = "ID диагноза";
             this.IdDiagnosisColumn.Name = "IdDiagnosisColumn";
             this.IdDiagnosisColumn.ReadOnly = true;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 16);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.richTextBoxDescription);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer2.Size = new System.Drawing.Size(854, 219);
+            this.splitContainer2.SplitterDistance = 437;
+            this.splitContainer2.TabIndex = 1;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.groupBoxSympt);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.groupBoxTreatment);
+            this.splitContainer3.Size = new System.Drawing.Size(413, 219);
+            this.splitContainer3.SplitterDistance = 70;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // groupBoxSympt
+            // 
+            this.groupBoxSympt.Controls.Add(this.richTextBoxSympt);
+            this.groupBoxSympt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxSympt.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxSympt.Name = "groupBoxSympt";
+            this.groupBoxSympt.Size = new System.Drawing.Size(413, 70);
+            this.groupBoxSympt.TabIndex = 0;
+            this.groupBoxSympt.TabStop = false;
+            this.groupBoxSympt.Text = "Характерные симптомы";
+            // 
+            // groupBoxTreatment
+            // 
+            this.groupBoxTreatment.Controls.Add(this.richTextBoxTreatment);
+            this.groupBoxTreatment.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxTreatment.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxTreatment.Name = "groupBoxTreatment";
+            this.groupBoxTreatment.Size = new System.Drawing.Size(413, 145);
+            this.groupBoxTreatment.TabIndex = 0;
+            this.groupBoxTreatment.TabStop = false;
+            this.groupBoxTreatment.Text = "Лечение";
+            // 
+            // richTextBoxSympt
+            // 
+            this.richTextBoxSympt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxSympt.Location = new System.Drawing.Point(3, 16);
+            this.richTextBoxSympt.Name = "richTextBoxSympt";
+            this.richTextBoxSympt.Size = new System.Drawing.Size(407, 51);
+            this.richTextBoxSympt.TabIndex = 0;
+            this.richTextBoxSympt.Text = "";
+            // 
+            // richTextBoxTreatment
+            // 
+            this.richTextBoxTreatment.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxTreatment.Location = new System.Drawing.Point(3, 16);
+            this.richTextBoxTreatment.Name = "richTextBoxTreatment";
+            this.richTextBoxTreatment.Size = new System.Drawing.Size(407, 126);
+            this.richTextBoxTreatment.TabIndex = 0;
+            this.richTextBoxTreatment.Text = "";
             // 
             // MainForm
             // 
@@ -793,6 +885,16 @@
             this.tabPageBase.ResumeLayout(false);
             this.groupBoxBase.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBase)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.groupBoxSympt.ResumeLayout(false);
+            this.groupBoxTreatment.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -863,6 +965,12 @@
         private System.Windows.Forms.DataGridView dataGridViewSecondHipotez;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.GroupBox groupBoxSympt;
+        private System.Windows.Forms.GroupBox groupBoxTreatment;
+        private System.Windows.Forms.RichTextBox richTextBoxSympt;
+        private System.Windows.Forms.RichTextBox richTextBoxTreatment;
     }
 }
 

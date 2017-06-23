@@ -481,8 +481,8 @@ namespace MESysWin
 
         private void UpdateHipotez()
         {
-            dataGridViewHipotez.Rows.Clear();
             dataGridViewSecondHipotez.Rows.Clear();
+            dataGridViewHipotez.Rows.Clear();
             foreach (var hip in LogicOutput.Instance.Hipotezes)
             {
                 if (hip.Coincidence > 0)
@@ -513,6 +513,7 @@ namespace MESysWin
         private void dataGridViewHipotez_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridViewHipotez.SelectedCells.Count > 0) {
+                dataGridViewSecondHipotez.ClearSelection();
                 var diagns = DatabaseManager.Instance.GetDiagnosis();
                 foreach (var d in diagns)
                 {
@@ -520,6 +521,27 @@ namespace MESysWin
                     if (d.Name.Equals(dataGridViewHipotez.Rows[i].Cells[0].Value.ToString()))
                     {
                         richTextBoxDescription.Text = d.Description;
+                        richTextBoxSympt.Text = d.Symptoms;
+                        richTextBoxTreatment.Text = d.Treatment;
+                    }
+                }
+            }
+        }
+
+        private void dataGridViewSecondHipotez_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridViewSecondHipotez.SelectedCells.Count > 0)
+            {
+                dataGridViewHipotez.ClearSelection();
+                var diagns = DatabaseManager.Instance.GetDiagnosis();
+                foreach (var d in diagns)
+                {
+                    int i = dataGridViewSecondHipotez.SelectedCells[0].RowIndex;
+                    if (d.Name.Equals(dataGridViewSecondHipotez.Rows[i].Cells[0].Value.ToString()))
+                    {
+                        richTextBoxDescription.Text = d.Description;
+                        richTextBoxSympt.Text = d.Symptoms;
+                        richTextBoxTreatment.Text = d.Treatment;
                     }
                 }
             }
